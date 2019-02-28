@@ -27,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
         return activityWeakReference;
     }
 
+    public DrawerLayout getDrawerLayout() {
+        return drawerLayout;
+    }
+
     public ImageView getImageView() {
         return mainImage;
     }
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         checker.startCheck(activityWeakReference);
         mainImage.setOnTouchListener(myGestureResponses.mainActivityGestures);
 
+
     }
 
     @Override
@@ -68,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Press Back Again To Close!", Toast.LENGTH_SHORT).show();
             backPresses++;
         } else {
-            backPresses=0;
+            backPresses = 0;
             super.onBackPressed();
         }
     }
