@@ -1,0 +1,45 @@
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0.4"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+}
+
+publish {
+    def groupProjectID = 'com.kc.androidunsplash'
+    def artifactProjectID = 'androidunsplash'
+    def publishVersionID = '1.0.4'
+
+    userOrg = 'keenencharles'
+    repoName = 'android-unsplash'
+    groupId = groupProjectID
+    artifactId = artifactProjectID
+    publishVersion = publishVersionID
+    uploadName = 'android-unsplash'
+    desc = 'An unofficial library to access the Unsplash API.'
+    website = 'https://github.com/KeenenCharles/AndroidUnplash'
+}
