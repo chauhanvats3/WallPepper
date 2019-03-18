@@ -5,13 +5,15 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:theme="@style/AppTheme.NoActionBar"
     tools:context=".MainActivity"
     tools:openDrawer="start">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:theme="@style/AppTheme.NoActionBar">
 
         <ImageView
             android:id="@+id/imgMainImage"
@@ -30,9 +32,6 @@
             style="@style/Widget.AppCompat.EditText"
             android:layout_width="0dp"
             android:layout_height="@dimen/searchBoxSize"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="19dp"
-            android:layout_marginBottom="8dp"
             android:autofillHints=""
             android:background="@android:drawable/editbox_dropdown_dark_frame"
             android:backgroundTint="?attr/colorControlHighlight"
@@ -47,7 +46,7 @@
             android:typeface="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" tools:targetApi="o"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
