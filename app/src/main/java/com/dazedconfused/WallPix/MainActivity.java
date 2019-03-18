@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends AppCompatActivity {
     private static WeakReference<MainActivity> activityWeakReference;
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity getMInstanceActivityContext() {
         return activityWeakReference.get();
+    }
+
+    public FragmentManager getFragManager(){
+        return getSupportFragmentManager();
     }
 
     public static WeakReference<MainActivity> getMActivityWeakReference() {
@@ -66,41 +71,13 @@ public class MainActivity extends AppCompatActivity {
         editTextSearchQuery = findViewById(R.id.editTextSearchQuery);
         navigationView=findViewById(R.id.nav_view);
         MyGestureResponses myGestureResponses = new MyGestureResponses();
-        MyPermissionChecker checker = new MyPermissionChecker();
-
-        checker.startCheck(activityWeakReference);
         mainImage.setOnTouchListener(myGestureResponses.mainActivityGestures);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.nav_favorite:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new FavoriteFragment()).addToBackStack("favorite").commit();
-                        break;
-                    case R.id.nav_schedule:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SchedulerFragment()).addToBackStack("scheduler").commit();
-                        break;
-                    case R.id.nav_settings:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment()).addToBackStack("settings").commit();
-                        break;
-                    case R.id.nav_contact:
-                        Toast.makeText(MainActivity.this, "Contact", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_share:
-                        Toast.makeText(MainActivity.this, "Share", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_home:
-                        //getSupportFragmentManager().popBackStack();
-                        startActivity(new Intent(MainActivity.this, MainActivity.class));
-                        finish();
-                        break;
-                }
-                drawerLayout.closeDrawer(GravityCompat.START);
-                return true;
-            }
+        MyPermissionChecker checker = new MyPermissionChecker();
+        checker.startCheck(activityWeakReference);
 
-        });
+        MyNavItemListener navItemListener=new MyNavItemListener();
+        navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
 
     }
 

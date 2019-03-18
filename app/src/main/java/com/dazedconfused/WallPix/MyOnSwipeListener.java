@@ -86,7 +86,7 @@ public class MyOnSwipeListener implements View.OnTouchListener {
                             onSwipeLeft();
                         }
                     }
-                } else {
+
                     if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffY > 0) {
                             onSwipeDown();
