@@ -10,6 +10,7 @@ public class MyOnSwipeListener implements View.OnTouchListener {
 
     private GestureDetector gestureDetector;
 
+
     MyOnSwipeListener(Context c) {
         gestureDetector = new GestureDetector(c, new GestureListener());
     }

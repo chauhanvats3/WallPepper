@@ -33,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
         return activityWeakReference.get();
     }
 
-    public FragmentManager getFragManager(){
-        return getSupportFragmentManager();
-    }
-
     public static WeakReference<MainActivity> getMActivityWeakReference() {
         return activityWeakReference;
+    }
+
+    public FragmentManager getFragManager() {
+        return getSupportFragmentManager();
     }
 
     public DrawerLayout getDrawerLayout() {
@@ -69,14 +69,14 @@ public class MainActivity extends AppCompatActivity {
         //Required Objects :
         mainImage = findViewById(R.id.imgMainImage);
         editTextSearchQuery = findViewById(R.id.editTextSearchQuery);
-        navigationView=findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         MyGestureResponses myGestureResponses = new MyGestureResponses();
-        mainImage.setOnTouchListener(myGestureResponses.mainActivityGestures);
 
+        mainImage.setOnTouchListener(myGestureResponses.mainActivityGestures);
         MyPermissionChecker checker = new MyPermissionChecker();
         checker.startCheck(activityWeakReference);
 
-        MyNavItemListener navItemListener=new MyNavItemListener();
+        MyNavItemListener navItemListener = new MyNavItemListener();
         navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
 
     }
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
     public void closeKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {

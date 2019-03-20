@@ -14,13 +14,16 @@ class MyGestureResponses {
 
 
      MyOnSwipeListener mainActivityGestures=new MyOnSwipeListener(mainActivityWeakReference.get()) {
+         MyImageSetter imageSetter;
 
-        @Override
+         @Override
         public void onClick() {
             super.onClick();
+            if(!MyRuntimePreferences.isSettingImage()){
+                imageSetter = new MyImageSetter();
+                imageSetter.setImage();
+            }
             mainActivityWeakReference.get().closeKeyboard();
-            MyImageSetter imageSetter = new MyImageSetter(mainActivityWeakReference);
-            imageSetter.setImage();
         }
 
         @Override
