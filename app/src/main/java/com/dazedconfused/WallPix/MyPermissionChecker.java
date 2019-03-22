@@ -16,6 +16,8 @@ import androidx.core.content.PermissionChecker;
 
 
 class MyPermissionChecker{
+    private static final String TAG="MyPermissionChecker";
+
     private int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
 
     void startCheck(WeakReference<MainActivity> myAppRefernce){

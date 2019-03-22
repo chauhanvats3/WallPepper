@@ -23,6 +23,8 @@ class MyDownloader extends AsyncTask<String, Void, Bitmap> {
     private String searchQuery;
     private WeakReference<MainActivity> weakReference;
     private SharedPreferences sharedPreferences;
+    private static final String TAG="MyDownloader";
+
 
     //Custom Constructor To Implement Interface
     MyDownloader(AsyncResponse asyncResponse) {

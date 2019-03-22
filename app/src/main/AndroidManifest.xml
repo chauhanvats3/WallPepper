@@ -4,6 +4,7 @@
     package="com.dazedconfused.WallPix">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -15,7 +16,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Settings"></activity>
+        <activity android:name=".SchedulerActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".Settings"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -26,6 +32,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".MyScheduledJob"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 
 </manifest>

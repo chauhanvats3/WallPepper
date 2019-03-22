@@ -11,6 +11,7 @@ import com.kc.unsplash.models.Photo;
 
 class MyImageSetter {
 
+    private static final String TAG="MyImageSetter";
 
     private Unsplash unsplash;
     private ImageView mainImage;

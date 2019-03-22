@@ -6,6 +6,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 class MyMainGestureResponses {
+    private static final String TAG="MyMainGesture";
+
     private WeakReference<MainActivity> mainActivityWeakReference = MainActivity.getMActivityWeakReference();
 
     //THESE ARE SWIPE DEFINITIONS FOR MAIN ACTIVITY

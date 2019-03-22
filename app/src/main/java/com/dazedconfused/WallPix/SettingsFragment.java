@@ -11,7 +11,9 @@ import static com.dazedconfused.WallPix.MyRuntimePreferences.KEY_PREF_ORIENTATIO
 import static com.dazedconfused.WallPix.MyRuntimePreferences.KEY_PREF_SEARCH_QUERY;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-/*   public static final String KEY_PREF_FEATURED="pref_search_featured";
+    private static final String TAG="SettingsFragment";
+
+    /*   public static final String KEY_PREF_FEATURED="pref_search_featured";
     public static final String KEY_PREF_SEARCH_QUERY="pref_search_query";
     public static final String KEY_PREF_ORIENTATION ="pref_orientation";*/
 private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener;

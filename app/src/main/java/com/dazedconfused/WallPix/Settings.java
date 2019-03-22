@@ -12,16 +12,21 @@ import com.google.android.material.navigation.NavigationView;
 import java.lang.ref.WeakReference;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class Settings extends AppCompatActivity {
+    private static final String TAG = "Settings";
+
     private static WeakReference<Settings> myWeakReference;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
-   /* private FrameLayout settingsFrameLayout;
-    private LinearLayout settingLinearLayout;
-*/
+    private Toolbar toolbar;
+
+    /* private FrameLayout settingsFrameLayout;
+     private LinearLayout settingLinearLayout;
+ */
     public static WeakReference<Settings> getWeakReference() {
         return myWeakReference;
     }
@@ -38,6 +43,13 @@ public class Settings extends AppCompatActivity {
         }
     }
 
+    protected void hideStatusBar() {
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +58,12 @@ public class Settings extends AppCompatActivity {
         myWeakReference = new WeakReference<>(this);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.settings_toolbar);
+        toolbar.setTitle("Settings");
+        setSupportActionBar(toolbar);
+        hideStatusBar();
+
+
         /*settingsFrameLayout = findViewById(R.id.fragment_container_settings);
         settingLinearLayout=findViewById(R.id.setting_linear_layout);
         MySettingsGestureResponses mySettingsGestureResponses = new MySettingsGestureResponses();*/

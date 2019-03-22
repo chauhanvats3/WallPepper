@@ -1,6 +1,8 @@
 package com.dazedconfused.WallPix;
 
 class MyRuntimePreferences {
+    private static final String TAG="MyRuntimePref";
+
     private static final MyRuntimePreferences ourInstance = new MyRuntimePreferences();
     public static final String KEY_PREF_FEATURED="pref_search_featured";
     public static final String KEY_PREF_SEARCH_QUERY="pref_search_query";

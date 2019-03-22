@@ -13,10 +13,10 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MyNavItemListener {
+    private static final String TAG = "MyNavItemListener";
 
     private WeakReference<MainActivity> mainActivityWeakReference = MainActivity.getMActivityWeakReference();
-    private DrawerLayout drawerLayout = mainActivityWeakReference.get().getDrawerLayout();
-
+    private WeakReference<Settings> settingsWeakReference = Settings.getWeakReference();
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -27,7 +27,11 @@ public class MyNavItemListener {
                     /*mainActivityWeakReference.get().getFragManager().beginTransaction().replace(R.id.fragment_container,new FavoriteFragment()).commit();*/
                     break;
                 case R.id.nav_schedule:
-                    /*mainActivityWeakReference.get().getFragManager().beginTransaction().replace(R.id.fragment_container,new SchedulerFragment()).commit();*/
+                    if (mainActivityWeakReference != null)
+                        mainActivityWeakReference.get().finish();
+                    if (settingsWeakReference != null)
+                        settingsWeakReference.get().finish();
+                    mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), SchedulerActivity.class));
                     break;
                 case R.id.nav_settings:
                     if (mainActivityWeakReference != null)
@@ -41,8 +45,9 @@ public class MyNavItemListener {
                     Toast.makeText(mainActivityWeakReference.get(), "Share", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_home:
-                    if (Settings.getWeakReference() != null)
-                        Settings.getWeakReference().get().finish();
+                    if (settingsWeakReference!=null)
+                    settingsWeakReference.get().finish();
+
                     mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), MainActivity.class));
                     break;
             }
@@ -51,5 +56,7 @@ public class MyNavItemListener {
         }
 
     };
+    private DrawerLayout drawerLayout = mainActivityWeakReference.get().getDrawerLayout();
+    private WeakReference<SchedulerActivity> schedulerWeakReference =SchedulerActivity.getWeakReference();
 
 }
