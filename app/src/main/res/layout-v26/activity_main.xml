@@ -27,30 +27,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <EditText
-            android:id="@+id/editTextSearchQuery"
-            style="@style/Widget.AppCompat.EditText"
-            android:layout_width="0dp"
-            android:layout_height="59dp"
-            android:autofillHints=""
-            android:background="@android:drawable/editbox_dropdown_dark_frame"
-            android:backgroundTint="?attr/colorControlHighlight"
-            android:backgroundTintMode="src_atop"
-            android:ems="10"
-            android:fontFamily="sans-serif-smallcaps"
-            android:hint="@string/enter_tags"
-            android:inputType="textPersonName"
-            android:textAlignment="center"
-            android:textColor="@android:color/secondary_text_dark_nodisable"
-            android:textSize="24sp"
-            android:typeface="normal"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.944"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:targetApi="o" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView

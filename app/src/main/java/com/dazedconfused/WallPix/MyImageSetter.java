@@ -1,6 +1,7 @@
 package com.dazedconfused.WallPix;
 
 import android.app.WallpaperManager;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -12,15 +13,12 @@ class MyImageSetter {
 
 
     private Unsplash unsplash;
-    private String searchQuery;
     private ImageView mainImage;
     private WallpaperManager myWallpaperManager;
 
-
-     MyImageSetter() {
-        String clientId = "a68a45531fb8cb9d6f22bff8a1af925eb454f99c1adb0f2dce4f8f8da75ad2ed";
+    MyImageSetter() {
+        String clientId = MainActivity.getMActivityWeakReference().get().getString(R.string.client_id);
         unsplash = new Unsplash(clientId);
-        searchQuery = MainActivity.getMActivityWeakReference().get().getSearchQuery();
         mainImage = MainActivity.getMActivityWeakReference().get().getImageView();
         myWallpaperManager = WallpaperManager.getInstance(MainActivity.getMActivityWeakReference().get());
     }
@@ -32,8 +30,11 @@ class MyImageSetter {
     void setImage() {
         getNewReference();
         MyRuntimePreferences.setImageSettingStatus(true);
-
-        unsplash.getRandomPhoto("", true, "", searchQuery, null, null, Unsplash.ORIENTATION_PORTRAIT, new Unsplash.OnPhotoLoadedListener() {
+        SharedPreferences sharedPreferences = MainActivity.getMActivityWeakReference().get().getMainSharedPreferences();
+        boolean prefFeatured = sharedPreferences.getBoolean(MyRuntimePreferences.KEY_PREF_FEATURED,true);
+        String searchQuery = sharedPreferences.getString(MyRuntimePreferences.KEY_PREF_SEARCH_QUERY, "");
+        String prefOrientation = sharedPreferences.getString(MyRuntimePreferences.KEY_PREF_ORIENTATION,"portrait");
+        unsplash.getRandomPhoto("",prefFeatured , "", searchQuery, null, null, prefOrientation, new Unsplash.OnPhotoLoadedListener() {
             @Override
             public void onComplete(Photo photo) {
                 String regPhotoUrl = photo.getUrls().getRegular();

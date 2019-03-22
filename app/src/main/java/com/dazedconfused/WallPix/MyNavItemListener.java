@@ -14,22 +14,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 public class MyNavItemListener {
 
-    private WeakReference<MainActivity> mainActivityWeakReference= MainActivity.getMActivityWeakReference();
-    private DrawerLayout drawerLayout=mainActivityWeakReference.get().getDrawerLayout();
+    private WeakReference<MainActivity> mainActivityWeakReference = MainActivity.getMActivityWeakReference();
+    private DrawerLayout drawerLayout = mainActivityWeakReference.get().getDrawerLayout();
 
-  NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener=  new NavigationView.OnNavigationItemSelectedListener() {
+    NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
 
-      @Override
+        @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()){
+
+            switch (item.getItemId()) {
                 case R.id.nav_favorite:
-                    mainActivityWeakReference.get().getFragManager().beginTransaction().replace(R.id.fragment_container,new FavoriteFragment()).commit();
+                    /*mainActivityWeakReference.get().getFragManager().beginTransaction().replace(R.id.fragment_container,new FavoriteFragment()).commit();*/
                     break;
                 case R.id.nav_schedule:
-                    mainActivityWeakReference.get().getFragManager().beginTransaction().replace(R.id.fragment_container,new SchedulerFragment()).commit();
+                    /*mainActivityWeakReference.get().getFragManager().beginTransaction().replace(R.id.fragment_container,new SchedulerFragment()).commit();*/
                     break;
                 case R.id.nav_settings:
-                    mainActivityWeakReference.get().getFragManager().beginTransaction().replace(R.id.fragment_container,new SettingsFragment()).commit();
+                    if (mainActivityWeakReference != null)
+                        mainActivityWeakReference.get().finish();
+                    mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), Settings.class));
                     break;
                 case R.id.nav_contact:
                     Toast.makeText(mainActivityWeakReference.get(), "Contact", Toast.LENGTH_SHORT).show();
@@ -38,8 +41,9 @@ public class MyNavItemListener {
                     Toast.makeText(mainActivityWeakReference.get(), "Share", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_home:
+                    if (Settings.getWeakReference() != null)
+                        Settings.getWeakReference().get().finish();
                     mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), MainActivity.class));
-                    mainActivityWeakReference.get().finish();
                     break;
             }
             drawerLayout.closeDrawer(GravityCompat.START);
@@ -47,5 +51,5 @@ public class MyNavItemListener {
         }
 
     };
-    
+
 }

@@ -1,29 +1,25 @@
 package com.dazedconfused.WallPix;
 
-import android.view.View;
-import android.widget.EditText;
-
 import java.lang.ref.WeakReference;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-class MyGestureResponses {
-    private  WeakReference<MainActivity> mainActivityWeakReference= MainActivity.getMActivityWeakReference();
-    private EditText editTextSearchQuery = MainActivity.getMInstanceActivityContext().getEditTextSearchQuery();
+class MyMainGestureResponses {
+    private WeakReference<MainActivity> mainActivityWeakReference = MainActivity.getMActivityWeakReference();
 
+    //THESE ARE SWIPE DEFINITIONS FOR MAIN ACTIVITY
+    MyOnSwipeListener mainActivityGestures = new MyOnSwipeListener(mainActivityWeakReference.get()) {
+        MyImageSetter imageSetter;
 
-     MyOnSwipeListener mainActivityGestures=new MyOnSwipeListener(mainActivityWeakReference.get()) {
-         MyImageSetter imageSetter;
-
-         @Override
+        @Override
         public void onClick() {
             super.onClick();
-            if(!MyRuntimePreferences.isSettingImage()){
+            if (!MyRuntimePreferences.isSettingImage()) {
                 imageSetter = new MyImageSetter();
                 imageSetter.setImage();
-            }
-            mainActivityWeakReference.get().closeKeyboard();
+            } else
+                mainActivityWeakReference.get().closeKeyboard();
         }
 
         @Override
@@ -46,16 +42,12 @@ class MyGestureResponses {
         public void onSwipeUp() {
             super.onSwipeUp();
             mainActivityWeakReference.get().closeKeyboard();
-
-            editTextSearchQuery.setVisibility(View.VISIBLE);
         }
 
         @Override
         public void onSwipeDown() {
             super.onSwipeDown();
             mainActivityWeakReference.get().closeKeyboard();
-
-            editTextSearchQuery.setVisibility(View.INVISIBLE);
         }
 
         @Override
@@ -70,7 +62,7 @@ class MyGestureResponses {
         public void onSwipeRight() {
             super.onSwipeRight();
             mainActivityWeakReference.get().closeKeyboard();
-            DrawerLayout drawerLayout=mainActivityWeakReference.get().getDrawerLayout();
+            DrawerLayout drawerLayout = mainActivityWeakReference.get().getDrawerLayout();
             drawerLayout.openDrawer(GravityCompat.START);
             // your swipe right here.
         }

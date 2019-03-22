@@ -2,12 +2,10 @@ package com.dazedconfused.WallPix;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -15,24 +13,27 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.lang.ref.WeakReference;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
     private static WeakReference<MainActivity> activityWeakReference;
     private ImageView mainImage;
-    private EditText editTextSearchQuery;
     private DrawerLayout drawerLayout;
     private int backPresses;
     private NavigationView navigationView;
+    private SharedPreferences sharedPreferences;
 
     public static MainActivity getMInstanceActivityContext() {
         return activityWeakReference.get();
     }
 
+    public SharedPreferences getMainSharedPreferences(){
+        return sharedPreferences;
+    }
     public static WeakReference<MainActivity> getMActivityWeakReference() {
         return activityWeakReference;
     }
@@ -49,14 +50,6 @@ public class MainActivity extends AppCompatActivity {
         return mainImage;
     }
 
-    public EditText getEditTextSearchQuery() {
-        return editTextSearchQuery;
-    }
-
-    public String getSearchQuery() {
-        return editTextSearchQuery.getText().toString().trim();
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,9 +61,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Required Objects :
         mainImage = findViewById(R.id.imgMainImage);
-        editTextSearchQuery = findViewById(R.id.editTextSearchQuery);
         navigationView = findViewById(R.id.nav_view);
-        MyGestureResponses myGestureResponses = new MyGestureResponses();
+        MyMainGestureResponses myGestureResponses = new MyMainGestureResponses();
 
         mainImage.setOnTouchListener(myGestureResponses.mainActivityGestures);
         MyPermissionChecker checker = new MyPermissionChecker();
@@ -79,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
         MyNavItemListener navItemListener = new MyNavItemListener();
         navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
 
+        PreferenceManager.setDefaultValues(this,R.xml.preferences,false);
+
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
