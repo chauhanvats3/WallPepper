@@ -23,19 +23,28 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
     public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String KEY_DEVICE_HEIGHT="deviceHeight";
-    public static final String KEY_DEVICE_WIDTH="deviceWidth";
+    public static final String KEY_DEVICE_HEIGHT = "deviceHeight";
+    public static final String KEY_DEVICE_WIDTH = "deviceWidth";
+    private static final String TAG = "MainActivity";
     private static WeakReference<MainActivity> activityWeakReference;
+    private static int DEVICE_WIDTH;
+    private static int DEVICE_HEIGHT;
     private ImageView mainImage;
     private DrawerLayout drawerLayout;
     private int backPresses;
     private SharedPreferences sharedPreferences;
     private BottomSheetBehavior bottomSheetBehavior;
-    private static int DEVICE_WIDTH;
-    private static int DEVICE_HEIGHT;
-    public int getDeviceWidth(){
+
+    public static MainActivity getMInstanceActivityContext() {
+        return activityWeakReference.get();
+    }
+
+    public static WeakReference<MainActivity> getMActivityWeakReference() {
+        return activityWeakReference;
+    }
+
+    public int getDeviceWidth() {
         return DEVICE_WIDTH;
     }
 
@@ -49,15 +58,6 @@ public class MainActivity extends AppCompatActivity {
         display.getSize(size);
         DEVICE_WIDTH = size.x;
         DEVICE_HEIGHT = size.y;
-    }
-
-    public static MainActivity getMInstanceActivityContext() {
-        return activityWeakReference.get();
-    }
-
-    public static WeakReference<MainActivity> getMActivityWeakReference() {
-        return activityWeakReference;
-
     }
 
     public BottomSheetBehavior getBottomSheetBehavior() {
@@ -75,19 +75,16 @@ public class MainActivity extends AppCompatActivity {
     public ImageView getImageView() {
         return mainImage;
     }
+
     private void saveDeviceDisplayInfo() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_DEVICE_HEIGHT,DEVICE_HEIGHT);
-        editor.putInt(KEY_DEVICE_WIDTH,DEVICE_WIDTH);
+        editor.putInt(KEY_DEVICE_HEIGHT, DEVICE_HEIGHT);
+        editor.putInt(KEY_DEVICE_WIDTH, DEVICE_WIDTH);
         editor.apply();
     }
 
-    public void loadDeviceDisplayInfo() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        DEVICE_HEIGHT=sharedPreferences.getInt(KEY_DEVICE_HEIGHT,1080);
-        DEVICE_WIDTH=sharedPreferences.getInt(KEY_DEVICE_WIDTH,720);
-    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,28 +96,18 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View bottomSheet = findViewById(R.id.bottom_sheet);
         mainImage = findViewById(R.id.imgMainImage);
-
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         bottomSheetBehavior.setHideable(false);
-
-
         activityWeakReference = new WeakReference<>(this);
         backPresses = 0;
-
         MyMainGestureResponses myGestureResponses = new MyMainGestureResponses();
-
         mainImage.setOnTouchListener(myGestureResponses.mainActivityGestures);
         MyPermissionChecker checker = new MyPermissionChecker();
         checker.startCheck(activityWeakReference);
-
         MyNavItemListener navItemListener = new MyNavItemListener();
         navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
-
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-
-
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -143,15 +130,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-
             }
         });
-
     }
 
     @Override
     public void onBackPressed() {
-
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
         else if (backPresses == 0) {

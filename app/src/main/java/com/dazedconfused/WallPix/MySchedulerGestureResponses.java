@@ -6,7 +6,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 class MySchedulerGestureResponses {
-    private static final String TAG="SchedulerGestureResponses";
+    private static final String TAG = "SchedulerGestureResponses";
 
     private WeakReference<SchedulerActivity> schedulerReference = SchedulerActivity.getWeakReference();
 
@@ -26,7 +26,6 @@ class MySchedulerGestureResponses {
         @Override
         public void onLongClick() {
             super.onLongClick();
-
             // your on onLongClick here
         }
 
@@ -43,7 +42,6 @@ class MySchedulerGestureResponses {
         @Override
         public void onSwipeLeft() {
             super.onSwipeLeft();
-
             // your swipe left here.
         }
 

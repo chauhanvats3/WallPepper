@@ -23,6 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
+
     public static WeakReference<SettingsActivity> getWeakReference() {
         return myWeakReference;
     }
@@ -43,7 +44,6 @@ public class SettingsActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
-
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -58,19 +58,15 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar.setTitle("SettingsActivity");
         setSupportActionBar(toolbar);
         hideStatusBar();
-
         MyNavItemListener navItemListener = new MyNavItemListener();
         navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
-
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_settings, new SettingsFragment()).commit();
         MySettingsGestureResponses mySettingsGestureResponses = new MySettingsGestureResponses();
         drawerLayout.setOnTouchListener(mySettingsGestureResponses.settingsActivityGestures);
-
     }
 
     @Override
     public void onBackPressed() {
-
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
             drawerLayout.closeDrawer(GravityCompat.START);
         else {
@@ -78,11 +74,13 @@ public class SettingsActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if(hasFocus)
+        if (hasFocus)
             hideStatusBar();
     }
+
     @Override
     protected void onResume() {
         super.onResume();

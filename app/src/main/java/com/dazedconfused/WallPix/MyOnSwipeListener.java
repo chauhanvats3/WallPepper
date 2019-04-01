@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class MyOnSwipeListener implements View.OnTouchListener {
-    private static final String TAG="MyOnSwipeListener";
+    private static final String TAG = "MyOnSwipeListener";
 
     private GestureDetector gestureDetector;
 
@@ -34,15 +34,12 @@ public class MyOnSwipeListener implements View.OnTouchListener {
     }
 
     public void onClick() {
-
     }
 
     public void onDoubleClick() {
-
     }
 
     public void onLongClick() {
-
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -88,7 +85,6 @@ public class MyOnSwipeListener implements View.OnTouchListener {
                             onSwipeLeft();
                         }
                     }
-
                     if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
                         if (diffY > 0) {
                             onSwipeDown();

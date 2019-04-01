@@ -31,7 +31,6 @@ class MyMainGestureResponses {
         public void onDoubleClick() {
             super.onDoubleClick();
             mainActivityWeakReference.get().closeKeyboard();
-
             // your on onDoubleClick here
         }
 
@@ -39,7 +38,6 @@ class MyMainGestureResponses {
         public void onLongClick() {
             super.onLongClick();
             mainActivityWeakReference.get().closeKeyboard();
-
             // your on onLongClick here
         }
 
@@ -60,7 +58,6 @@ class MyMainGestureResponses {
         @Override
         public void onSwipeLeft() {
             super.onSwipeLeft();
-
             // your swipe left here.
         }
 
@@ -76,5 +73,4 @@ class MyMainGestureResponses {
     private void getBottomSheetBehavior() {
         bottomSheetBehavior = mainActivityWeakReference.get().getBottomSheetBehavior();
     }
-
 }

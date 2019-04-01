@@ -22,7 +22,6 @@ class MySettingsGestureResponses {
         public void onDoubleClick() {
             super.onDoubleClick();
             settingsWeakReference.get().closeKeyboard();
-
             // your on onDoubleClick here
         }
 
@@ -30,7 +29,6 @@ class MySettingsGestureResponses {
         public void onLongClick() {
             super.onLongClick();
             settingsWeakReference.get().closeKeyboard();
-
             // your on onLongClick here
         }
 
@@ -38,7 +36,6 @@ class MySettingsGestureResponses {
         public void onSwipeUp() {
             super.onSwipeUp();
             settingsWeakReference.get().closeKeyboard();
-
         }
 
         @Override
@@ -51,7 +48,6 @@ class MySettingsGestureResponses {
         public void onSwipeLeft() {
             super.onSwipeLeft();
             settingsWeakReference.get().closeKeyboard();
-
             // your swipe left here.
         }
 

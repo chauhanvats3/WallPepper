@@ -17,20 +17,21 @@ public class MyNavItemListener {
 
     private WeakReference<MainActivity> mainActivityWeakReference = MainActivity.getMActivityWeakReference();
     private WeakReference<SettingsActivity> settingsWeakReference = SettingsActivity.getWeakReference();
+    private DrawerLayout drawerLayout = mainActivityWeakReference.get().getDrawerLayout();
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
             switch (item.getItemId()) {
                 case R.id.nav_favorite:
-
                     break;
                 case R.id.nav_schedule:
-                    if (mainActivityWeakReference != null){
-                        mainActivityWeakReference.get().finish();}
-                    if (settingsWeakReference != null){
-                        settingsWeakReference.get().finish();}
+                    if (mainActivityWeakReference != null) {
+                        mainActivityWeakReference.get().finish();
+                    }
+                    if (settingsWeakReference != null) {
+                        settingsWeakReference.get().finish();
+                    }
                     mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), SchedulerActivity.class));
                     break;
                 case R.id.nav_settings:
@@ -45,18 +46,14 @@ public class MyNavItemListener {
                     Toast.makeText(mainActivityWeakReference.get(), "Share", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_home:
-                    if (settingsWeakReference!=null)
-                    settingsWeakReference.get().finish();
-
+                    if (settingsWeakReference != null)
+                        settingsWeakReference.get().finish();
                     mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), MainActivity.class));
                     break;
             }
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
         }
-
     };
-    private DrawerLayout drawerLayout = mainActivityWeakReference.get().getDrawerLayout();
-    private WeakReference<SchedulerActivity> schedulerWeakReference =SchedulerActivity.getWeakReference();
-
+    private WeakReference<SchedulerActivity> schedulerWeakReference = SchedulerActivity.getWeakReference();
 }
