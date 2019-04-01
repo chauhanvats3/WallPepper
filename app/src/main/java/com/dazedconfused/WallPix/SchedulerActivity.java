@@ -99,6 +99,8 @@ public class SchedulerActivity extends AppCompatActivity {
 
         MyNavItemListener navItemListener = new MyNavItemListener();
         navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
+        MySchedulerGestureResponses mySchedulerGestureResponses = new MySchedulerGestureResponses();
+        drawerLayout.setOnTouchListener(mySchedulerGestureResponses.schedulerGestures);
 
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.pref_scheduler_title, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -108,16 +110,14 @@ public class SchedulerActivity extends AppCompatActivity {
             spinner.setEnabled(true);
         else spinner.setEnabled(false);
         spinner.setSelection(selectedPosition);
-        first_spinner=1;
+        first_spinner = 1;
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 if (first_spinner_counter < first_spinner) {
                     first_spinner_counter++;
-                }
-                else
-                {
+                } else {
                     String stringArray[] = getResources().getStringArray(R.array.pref_scheduler_values);
                     interval = Integer.parseInt(stringArray[position]);
                     Toast.makeText(SchedulerActivity.this, "Interval Set : " + interval + " Hour", Toast.LENGTH_SHORT).show();
@@ -136,8 +136,6 @@ public class SchedulerActivity extends AppCompatActivity {
             }
         });
 
-        MySchedulerGestureResponses mySchedulerGestureResponses = new MySchedulerGestureResponses();
-        drawerLayout.setOnTouchListener(mySchedulerGestureResponses.schedulerGestures);
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

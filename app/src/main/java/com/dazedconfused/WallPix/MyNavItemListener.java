@@ -27,10 +27,10 @@ public class MyNavItemListener {
 
                     break;
                 case R.id.nav_schedule:
-                    if (mainActivityWeakReference != null)
-                        mainActivityWeakReference.get().finish();
-                    if (settingsWeakReference != null)
-                        settingsWeakReference.get().finish();
+                    if (mainActivityWeakReference != null){
+                        mainActivityWeakReference.get().finish();}
+                    if (settingsWeakReference != null){
+                        settingsWeakReference.get().finish();}
                     mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), SchedulerActivity.class));
                     break;
                 case R.id.nav_settings:

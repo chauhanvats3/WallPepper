@@ -9,16 +9,36 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
+import static com.dazedconfused.WallPix.MyRuntimePreferences.KEY_DEVICE_HEIGHT;
+import static com.dazedconfused.WallPix.MyRuntimePreferences.KEY_DEVICE_WIDTH;
+import static com.dazedconfused.WallPix.MyRuntimePreferences.SHARED_PREFS;
+
 public class MyScheduledJob extends JobService {
     private static final String TAG="MyScheduledJob";
+    private static int DEVICE_WIDTH ;
+    private static int DEVICE_HEIGHT ;
     private boolean jobCancelled=false;
     private static WeakReference<MyScheduledJob> jobWeakReference;
+
+    public int getDeviceHeight() {
+        return DEVICE_HEIGHT;
+    }
+
+    public int getDeviceWidth() {
+        return DEVICE_WIDTH;
+    }
+
     public static WeakReference<MyScheduledJob> getScheduleJobReference(){
         return jobWeakReference;
     }
 public SharedPreferences getSharedPreferences(){
         return PreferenceManager.getDefaultSharedPreferences(jobWeakReference.get());
 }
+    public void loadDeviceDisplayInfo() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        DEVICE_HEIGHT=sharedPreferences.getInt(KEY_DEVICE_HEIGHT,1080);
+        DEVICE_WIDTH=sharedPreferences.getInt(KEY_DEVICE_WIDTH,720);
+    }
     @Override
     public void onCreate() {
         super.onCreate();
