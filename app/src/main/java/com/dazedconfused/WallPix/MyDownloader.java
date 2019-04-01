@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -12,38 +13,47 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-//Interface is for passing the downloaded image to the image view in main thread
-interface AsyncResponse {
-    void processFinish(Bitmap image);
-}
-
 //Background thread Class To download the image to be set
 class MyDownloader extends AsyncTask<String, Void, Bitmap> {
     private AsyncResponse delegate;
     private String searchQuery;
     private WeakReference<MainActivity> weakReference;
+    private WeakReference<MyScheduledJob> scheduledJobWeakReference;
     private SharedPreferences sharedPreferences;
     private static final String TAG="MyDownloader";
-
+    private int context;
 
     //Custom Constructor To Implement Interface
     MyDownloader(AsyncResponse asyncResponse) {
         delegate = asyncResponse;//Assigning call back interface through constructor
-        weakReference = MainActivity.getMActivityWeakReference();
-        sharedPreferences=weakReference.get().getMainSharedPreferences();
-        searchQuery=sharedPreferences.getString(MyRuntimePreferences.KEY_PREF_SEARCH_QUERY,"") ;   }
+          }
+
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        if(MainActivity.getMActivityWeakReference()!=null) {
+            weakReference = MainActivity.getMActivityWeakReference();
+            context=1;
+            sharedPreferences=weakReference.get().getMainSharedPreferences();
+        }else if (MyScheduledJob.getScheduleJobReference()!=null){
+            scheduledJobWeakReference=MyScheduledJob.getScheduleJobReference();
+            context=2;
+            sharedPreferences=scheduledJobWeakReference.get().getSharedPreferences();
+        }
+        Log.wtf(TAG,"PreDownload Phase<---------------------");
+        searchQuery=sharedPreferences.getString(MyRuntimePreferences.KEY_PREF_SEARCH_QUERY,"") ;
+        if (context==1)
         Toast.makeText(weakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(scheduledJobWeakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected Bitmap doInBackground(String... urls) {
         URL url;
         HttpURLConnection httpURLConnection;
-
+        Log.wtf(TAG,"Downloading The image<--------------------");
         try {
             url = new URL(urls[0]);
             httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -51,7 +61,10 @@ class MyDownloader extends AsyncTask<String, Void, Bitmap> {
             return BitmapFactory.decodeStream(is);
         } catch (Exception e) {
             e.printStackTrace();
+            if (context==1)
             Toast.makeText(weakReference.get(), "Couldn't Download " + searchQuery + " Image.", Toast.LENGTH_SHORT).show();
+            else
+                Toast.makeText(scheduledJobWeakReference.get(), "Couldn't Download " + searchQuery + " Image.", Toast.LENGTH_SHORT).show();
         }
         return null;
     }

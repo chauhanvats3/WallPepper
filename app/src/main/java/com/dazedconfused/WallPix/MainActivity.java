@@ -9,14 +9,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
 import java.lang.ref.WeakReference;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView mainImage;
     private DrawerLayout drawerLayout;
     private int backPresses;
-    private NavigationView navigationView;
     private SharedPreferences sharedPreferences;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     public static MainActivity getMInstanceActivityContext() {
         return activityWeakReference.get();
@@ -37,12 +38,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public SharedPreferences getMainSharedPreferences() {
-        return sharedPreferences;
+    public BottomSheetBehavior getBottomSheetBehavior() {
+        return bottomSheetBehavior;
     }
 
-    public FragmentManager getFragManager() {
-        return getSupportFragmentManager();
+    public SharedPreferences getMainSharedPreferences() {
+        return sharedPreferences;
     }
 
     public DrawerLayout getDrawerLayout() {
@@ -53,19 +54,24 @@ public class MainActivity extends AppCompatActivity {
         return mainImage;
     }
 
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View bottomSheet = findViewById(R.id.bottom_sheet);
+        mainImage = findViewById(R.id.imgMainImage);
+
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        bottomSheetBehavior.setHideable(false);
+
 
         activityWeakReference = new WeakReference<>(this);
         backPresses = 0;
 
-        //Required Objects :
-        mainImage = findViewById(R.id.imgMainImage);
         MyMainGestureResponses myGestureResponses = new MyMainGestureResponses();
 
         mainImage.setOnTouchListener(myGestureResponses.mainActivityGestures);
@@ -79,6 +85,33 @@ public class MainActivity extends AppCompatActivity {
 
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        backPresses = 0;
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        break;
+                    case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                        break;
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        break;
+                    case BottomSheetBehavior.STATE_SETTLING:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
     }
 
     @Override
@@ -88,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             drawerLayout.closeDrawer(GravityCompat.START);
         else if (backPresses == 0) {
             Toast.makeText(this, "Press Back Again To Close!", Toast.LENGTH_SHORT).show();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             backPresses++;
         } else {
             backPresses = 0;

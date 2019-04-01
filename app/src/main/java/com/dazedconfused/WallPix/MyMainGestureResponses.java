@@ -1,24 +1,27 @@
 package com.dazedconfused.WallPix;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
 import java.lang.ref.WeakReference;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 class MyMainGestureResponses {
-    private static final String TAG="MyMainGesture";
+    private static final String TAG = "MyMainGesture";
 
     private WeakReference<MainActivity> mainActivityWeakReference = MainActivity.getMActivityWeakReference();
-
+    private BottomSheetBehavior bottomSheetBehavior;
     //THESE ARE SWIPE DEFINITIONS FOR MAIN ACTIVITY
     MyOnSwipeListener mainActivityGestures = new MyOnSwipeListener(mainActivityWeakReference.get()) {
         MyImageSetter imageSetter;
+
 
         @Override
         public void onClick() {
             super.onClick();
             if (!MyRuntimePreferences.isSettingImage()) {
-                imageSetter = new MyImageSetter();
+                imageSetter = new MyImageSetter(mainActivityWeakReference.get());
                 imageSetter.setImage();
             } else
                 mainActivityWeakReference.get().closeKeyboard();
@@ -43,19 +46,20 @@ class MyMainGestureResponses {
         @Override
         public void onSwipeUp() {
             super.onSwipeUp();
-            mainActivityWeakReference.get().closeKeyboard();
+            getBottomSheetBehavior();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
 
         @Override
         public void onSwipeDown() {
             super.onSwipeDown();
-            mainActivityWeakReference.get().closeKeyboard();
+            getBottomSheetBehavior();
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
 
         @Override
         public void onSwipeLeft() {
             super.onSwipeLeft();
-            mainActivityWeakReference.get().closeKeyboard();
 
             // your swipe left here.
         }
@@ -63,10 +67,14 @@ class MyMainGestureResponses {
         @Override
         public void onSwipeRight() {
             super.onSwipeRight();
-            mainActivityWeakReference.get().closeKeyboard();
             DrawerLayout drawerLayout = mainActivityWeakReference.get().getDrawerLayout();
             drawerLayout.openDrawer(GravityCompat.START);
             // your swipe right here.
         }
     };
+
+    private void getBottomSheetBehavior() {
+        bottomSheetBehavior = mainActivityWeakReference.get().getBottomSheetBehavior();
+    }
+
 }

@@ -16,18 +16,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-public class Settings extends AppCompatActivity {
-    private static final String TAG = "Settings";
+public class SettingsActivity extends AppCompatActivity {
+    private static final String TAG = "SettingsActivity";
 
-    private static WeakReference<Settings> myWeakReference;
+    private static WeakReference<SettingsActivity> myWeakReference;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-
-    /* private FrameLayout settingsFrameLayout;
-     private LinearLayout settingLinearLayout;
- */
-    public static WeakReference<Settings> getWeakReference() {
+    public static WeakReference<SettingsActivity> getWeakReference() {
         return myWeakReference;
     }
 
@@ -59,19 +55,16 @@ public class Settings extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.settings_toolbar);
-        toolbar.setTitle("Settings");
+        toolbar.setTitle("SettingsActivity");
         setSupportActionBar(toolbar);
         hideStatusBar();
 
-
-        /*settingsFrameLayout = findViewById(R.id.fragment_container_settings);
-        settingLinearLayout=findViewById(R.id.setting_linear_layout);
-        MySettingsGestureResponses mySettingsGestureResponses = new MySettingsGestureResponses();*/
         MyNavItemListener navItemListener = new MyNavItemListener();
         navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
 
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_settings, new SettingsFragment()).commit();
-        /*settingLinearLayout.setOnTouchListener(mySettingsGestureResponses.settingsActivityGestures);*/
+        MySettingsGestureResponses mySettingsGestureResponses = new MySettingsGestureResponses();
+        drawerLayout.setOnTouchListener(mySettingsGestureResponses.settingsActivityGestures);
 
     }
 
@@ -84,5 +77,15 @@ public class Settings extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
             super.onBackPressed();
         }
+    }
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus)
+            hideStatusBar();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        hideStatusBar();
     }
 }

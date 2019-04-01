@@ -8,8 +8,7 @@
     android:theme="@style/AppTheme.NoActionBar"
     tools:context=".MainActivity"
     tools:openDrawer="start">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,8 +16,8 @@
 
         <ImageView
             android:id="@+id/imgMainImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:contentDescription="@string/todo"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +26,10 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@tools:sample/avatars" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <include layout="@layout/bottom_sheet_layout"/>
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

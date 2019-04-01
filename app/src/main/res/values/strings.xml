@@ -20,4 +20,18 @@
         <item>landscape</item>
         <item>squarish</item>
     </string-array>
+    <string-array name="pref_scheduler_title">
+        <item>1 Hour</item>
+        <item>3 Hour</item>
+        <item>6 Hour</item>
+        <item>12 Hour</item>
+        <item>24 Hour</item>
+    </string-array>
+    <string-array name="pref_scheduler_values">
+        <item>1</item>
+        <item>3</item>
+        <item>6</item>
+        <item>12</item>
+        <item>24</item>
+    </string-array>
 </resources>

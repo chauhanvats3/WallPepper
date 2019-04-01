@@ -19,7 +19,7 @@
         <activity android:name=".SchedulerActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".Settings"
+        <activity android:name=".SettingsActivity"
             android:screenOrientation="portrait"
             />
         <activity

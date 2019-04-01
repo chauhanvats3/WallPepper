@@ -16,7 +16,7 @@ public class MyNavItemListener {
     private static final String TAG = "MyNavItemListener";
 
     private WeakReference<MainActivity> mainActivityWeakReference = MainActivity.getMActivityWeakReference();
-    private WeakReference<Settings> settingsWeakReference = Settings.getWeakReference();
+    private WeakReference<SettingsActivity> settingsWeakReference = SettingsActivity.getWeakReference();
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -24,7 +24,7 @@ public class MyNavItemListener {
 
             switch (item.getItemId()) {
                 case R.id.nav_favorite:
-                    /*mainActivityWeakReference.get().getFragManager().beginTransaction().replace(R.id.fragment_container,new FavoriteFragment()).commit();*/
+
                     break;
                 case R.id.nav_schedule:
                     if (mainActivityWeakReference != null)
@@ -36,7 +36,7 @@ public class MyNavItemListener {
                 case R.id.nav_settings:
                     if (mainActivityWeakReference != null)
                         mainActivityWeakReference.get().finish();
-                    mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), Settings.class));
+                    mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), SettingsActivity.class));
                     break;
                 case R.id.nav_contact:
                     Toast.makeText(mainActivityWeakReference.get(), "Contact", Toast.LENGTH_SHORT).show();
