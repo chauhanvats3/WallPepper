@@ -36,7 +36,7 @@ public class SchedulerActivity extends AppCompatActivity {
     private static int interval;
     private static int selectedPosition;
     private final int JOB_ID = 6969;
-    int first_spinner = 0, first_spinner_counter = 0;
+    private int first_spinner = 0, first_spinner_counter = 0;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
@@ -69,7 +69,7 @@ public class SchedulerActivity extends AppCompatActivity {
 
     protected void hideStatusBar() {
         View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
     }
 
@@ -92,12 +92,13 @@ public class SchedulerActivity extends AppCompatActivity {
         loadData();
         toolbar.setTitle("Automatic Wallpaper Change");
         setSupportActionBar(toolbar);
-        MyNavItemListener navItemListener = new MyNavItemListener();
+        MyNavItemListener navItemListener = new MyNavItemListener(activityWeakReference);
         navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
         MySchedulerGestureResponses mySchedulerGestureResponses = new MySchedulerGestureResponses();
         drawerLayout.setOnTouchListener(mySchedulerGestureResponses.schedulerGestures);
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this, R.array.pref_scheduler_title, android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         spinner.setAdapter(arrayAdapter);
         if (switchButton.isChecked())
             spinner.setEnabled(true);

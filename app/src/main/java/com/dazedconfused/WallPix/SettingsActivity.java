@@ -42,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     protected void hideStatusBar() {
         View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        int uiOptions =View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY| View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         decorView.setSystemUiVisibility(uiOptions);
     }
 
@@ -55,10 +55,10 @@ public class SettingsActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.settings_toolbar);
-        toolbar.setTitle("SettingsActivity");
+        toolbar.setTitle("Settings");
         setSupportActionBar(toolbar);
         hideStatusBar();
-        MyNavItemListener navItemListener = new MyNavItemListener();
+        MyNavItemListener navItemListener = new MyNavItemListener(myWeakReference);
         navigationView.setNavigationItemSelectedListener(navItemListener.navigationItemSelectedListener);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container_settings, new SettingsFragment()).commit();
         MySettingsGestureResponses mySettingsGestureResponses = new MySettingsGestureResponses();

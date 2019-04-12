@@ -18,7 +18,7 @@ class MyDownloader extends AsyncTask<String, Void, Bitmap> {
     private static final String TAG = "MyDownloader";
     private AsyncResponse delegate;
     private String searchQuery;
-    private WeakReference<MainActivity> weakReference;
+    private WeakReference<MainActivity> mainActivityWeakReference;
     private WeakReference<MyScheduledJob> scheduledJobWeakReference;
     private SharedPreferences sharedPreferences;
     private int context;
@@ -32,19 +32,21 @@ class MyDownloader extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        if (MainActivity.getMActivityWeakReference() != null) {
-            weakReference = MainActivity.getMActivityWeakReference();
+        if (MainActivity.getMInstanceActivityContext() != null) {
+            mainActivityWeakReference = MainActivity.getMActivityWeakReference();
             context = 1;
-            sharedPreferences = weakReference.get().getMainSharedPreferences();
+            sharedPreferences = mainActivityWeakReference.get().getMainSharedPreferences();
+            Log.wtf(TAG,"Main Activity Reference got.<-------------------");
         } else if (MyScheduledJob.getScheduleJobReference() != null) {
             scheduledJobWeakReference = MyScheduledJob.getScheduleJobReference();
             context = 2;
             sharedPreferences = scheduledJobWeakReference.get().getSharedPreferences();
+            Log.wtf(TAG,"Scheduler Reference got<-----------------------");
         }
         Log.wtf(TAG, "PreDownload Phase<---------------------");
         searchQuery = sharedPreferences.getString(MyRuntimePreferences.KEY_PREF_SEARCH_QUERY, "");
         if (context == 1)
-            Toast.makeText(weakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mainActivityWeakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(scheduledJobWeakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();
     }
@@ -62,7 +64,7 @@ class MyDownloader extends AsyncTask<String, Void, Bitmap> {
         } catch (Exception e) {
             e.printStackTrace();
             if (context == 1)
-                Toast.makeText(weakReference.get(), "Couldn't Download " + searchQuery + " Image.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivityWeakReference.get(), "Couldn't Download " + searchQuery + " Image.", Toast.LENGTH_SHORT).show();
             else
                 Toast.makeText(scheduledJobWeakReference.get(), "Couldn't Download " + searchQuery + " Image.", Toast.LENGTH_SHORT).show();
         }

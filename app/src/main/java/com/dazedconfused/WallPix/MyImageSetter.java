@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.kc.unsplash.Unsplash;
 import com.kc.unsplash.models.Photo;
 
+import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_DATA;
+import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_UPLOADER_LINK;
+
 class MyImageSetter {
 
     private static final String TAG = "MyImageSetter";
@@ -23,8 +26,10 @@ class MyImageSetter {
     private ImageView mainImage;
     private WallpaperManager myWallpaperManager;
     private SharedPreferences defaultSharedPreferences;
+    private SharedPreferences photoDataPrefs;
     private int devHeight;
     private int devWidth;
+    private Photo myPhoto;
 
     MyImageSetter(MainActivity mainActivity) {
         context = mainActivity;
@@ -33,6 +38,7 @@ class MyImageSetter {
         mainImage = mainActivity.getImageView();
         myWallpaperManager = WallpaperManager.getInstance(mainActivity);
         defaultSharedPreferences = mainActivity.getMainSharedPreferences();
+        photoDataPrefs=mainActivity.getSharedPreferences(PHOTO_DATA,Context.MODE_PRIVATE);
         devHeight = mainActivity.getDeviceHeight();
         devWidth = mainActivity.getDeviceWidth();
     }
@@ -45,10 +51,16 @@ class MyImageSetter {
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         devHeight = myScheduledJob.getDeviceHeight();
         devWidth = myScheduledJob.getDeviceWidth();
+        photoDataPrefs=myScheduledJob.getSharedPreferences(PHOTO_DATA,Context.MODE_PRIVATE);
     }
 
     private void getNewReference() {
         mainImage = MainActivity.getMActivityWeakReference().get().getImageView();
+    }
+    private void savePhotoData(){
+        SharedPreferences.Editor editor=photoDataPrefs.edit();
+        editor.putString(PHOTO_UPLOADER_LINK,myPhoto.getLinks().getHtml());
+        editor.apply();
     }
 
     private Bitmap scaleCenterCrop(Bitmap source, int newHeight, int newWidth) {
@@ -87,11 +99,12 @@ class MyImageSetter {
         boolean prefFeatured = defaultSharedPreferences.getBoolean(MyRuntimePreferences.KEY_PREF_FEATURED, true);
         String searchQuery = defaultSharedPreferences.getString(MyRuntimePreferences.KEY_PREF_SEARCH_QUERY, "");
         String prefOrientation = defaultSharedPreferences.getString(MyRuntimePreferences.KEY_PREF_ORIENTATION, "portrait");
-       /* final int devWidth= defaultSharedPreferences.getInt(MyRuntimePreferences.KEY_DEVICE_WIDTH,720);
-        final int devHeight= defaultSharedPreferences.getInt(MyRuntimePreferences.KEY_DEVICE_HEIGHT,1080);*/
+
         unsplash.getRandomPhoto("", prefFeatured, "", searchQuery, null, null, prefOrientation, new Unsplash.OnPhotoLoadedListener() {
             @Override
             public void onComplete(final Photo photo) {
+                myPhoto=photo;
+                savePhotoData();
                 String regPhotoUrl = photo.getUrls().getRegular();
                 Log.wtf(TAG, "Link Acquired<------------------------------");
                 //Without picasso downloading image

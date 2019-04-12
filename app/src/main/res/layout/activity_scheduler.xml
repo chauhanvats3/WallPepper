@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="34dp"
             android:layout_marginEnd="17dp"
             android:checked="false"
             android:showText="false"
@@ -58,16 +58,28 @@
 
         <Spinner
             android:id="@+id/spinnerInterval"
-            android:layout_width="386dp"
-            android:layout_height="41dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="17dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="34dp"
             android:layout_marginEnd="17dp"
             android:dropDownWidth="wrap_content"
             android:entries="@array/pref_scheduler_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/swichScheduler" />
+
+        <CheckBox
+            android:id="@+id/chkbxFeatured"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="17dp"
+            android:text="Only Featured Photos"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerInterval" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -78,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="gone"
+        android:visibility="visible"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu" />
 
