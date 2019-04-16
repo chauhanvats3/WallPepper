@@ -44,15 +44,11 @@ class MyMainGestureResponses {
         @Override
         public void onSwipeUp() {
             super.onSwipeUp();
-            getBottomSheetBehavior();
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         }
 
         @Override
         public void onSwipeDown() {
             super.onSwipeDown();
-            getBottomSheetBehavior();
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
         }
 
         @Override
@@ -70,7 +66,4 @@ class MyMainGestureResponses {
         }
     };
 
-    private void getBottomSheetBehavior() {
-        bottomSheetBehavior = mainActivityWeakReference.get().getBottomSheetBehavior();
-    }
 }

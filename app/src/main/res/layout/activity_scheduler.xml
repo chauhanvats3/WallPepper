@@ -8,8 +8,8 @@
     android:layout_height="match_parent"
     android:theme="@style/AppTheme.ActionBar"
     tools:context=".SchedulerActivity"
-    tools:openDrawer="start"
-    >
+    tools:openDrawer="start">
+
     <LinearLayout
         android:id="@+id/setting_linear_layout"
         android:layout_width="match_parent"
@@ -22,66 +22,178 @@
             android:id="@+id/scheduler_toolbar"
             layout="@layout/toolbar"
             android:visibility="visible" />
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".SchedulerActivity">
 
-        <Switch
-            android:id="@+id/swichScheduler"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="34dp"
-            android:layout_marginEnd="17dp"
-            android:checked="false"
-            android:showText="false"
-            android:text="On / Off"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:checked="false" />
-
-        <Button
-            android:id="@+id/buttonTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="19dp"
-            android:layout_marginEnd="304dp"
-            android:layout_marginBottom="16dp"
-            android:onClick="isGoingOn"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Spinner
-            android:id="@+id/spinnerInterval"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="34dp"
-            android:layout_marginEnd="17dp"
-            android:dropDownWidth="wrap_content"
-            android:entries="@array/pref_scheduler_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swichScheduler" />
-
-        <CheckBox
-            android:id="@+id/chkbxFeatured"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
-            android:layout_marginTop="34dp"
-            android:layout_marginEnd="17dp"
-            android:text="Only Featured Photos"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerInterval" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="bottom|center"
+                    android:text="Automatic Wallpaper Update"
+                    android:textSize="20sp" />
+
+                <Switch
+                    android:id="@+id/swichScheduler"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:checked="false"
+                    android:showText="false"
+                    android:splitTrack="false"
+                    android:text="Schedule"
+                    android:textSize="24sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtInterval"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="center_horizontal"
+                    android:text="Set Duration"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerInterval"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:dropDownWidth="match_parent"
+                    android:entries="@array/pref_scheduler_title"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.9"
+                    android:gravity="center_vertical"
+                    android:text="Show Only Featured Photos"
+                    android:textAppearance="@style/Widget.MaterialComponents.CompoundButton.Switch"
+                    android:textSize="20sp"
+                    />
+
+                <CheckBox
+                    android:id="@+id/chkbxFeatured"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    android:checked="true"
+                    android:gravity="center|end"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="bottom|center"
+                    android:text="Enter Search Tags"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/txtSearchQuery"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/bungee_hairline"
+                    android:hint="Use general tags like Blue, Mountain, Galaxy, Love etc"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    android:typeface="monospace"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="bottom|center"
+                    android:text="Select Orientation"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerOrientation"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:dropDownWidth="wrap_content"
+                    android:entries="@array/pref_orientation_title"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:gravity="bottom|center"
+                    android:text="Select Download Quality"
+                    android:textSize="20sp" />
+
+                <Spinner
+                    android:id="@+id/spinnerImageQuality"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.5"
+                    android:dropDownWidth="wrap_content"
+                    android:entries="@array/pref_image_quality" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonTest"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.1"
+                android:onClick="isGoingOn"
+                android:text="Is Scheduler On?"
+                android:textAlignment="center" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -90,7 +202,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="visible"
+        android:visibility="gone"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu" />
 

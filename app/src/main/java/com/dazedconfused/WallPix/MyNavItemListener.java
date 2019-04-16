@@ -2,7 +2,9 @@ package com.dazedconfused.WallPix;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
@@ -20,10 +22,6 @@ Intent intent = new Intent(OldActivity.this, NewActivity.class);
 class MyNavItemListener {
     private static final String TAG = "MyNavItemListener";
     Context context;
-    private WeakReference<MainActivity> mainActivityWeakReference;
-    private WeakReference<SettingsActivity> settingsWeakReference;
-    private WeakReference<SchedulerActivity> schedulerActivityWeakReference;
-    private DrawerLayout drawerLayout;
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
 
         @Override
@@ -39,6 +37,7 @@ class MyNavItemListener {
                 schedulerActivityWeakReference=SchedulerActivity.getWeakReference();
                 drawerLayout=schedulerActivityWeakReference.get().getDrawerLayout();
             }
+
             drawerLayout.closeDrawer(GravityCompat.START);
             switch (item.getItemId()) {
                 case R.id.nav_favorite:
@@ -67,7 +66,9 @@ class MyNavItemListener {
                     mainActivityWeakReference.get().startActivity(new Intent(mainActivityWeakReference.get(), SettingsActivity.class));*/
                     break;
                 case R.id.nav_contact:
-                    Toast.makeText(context, "Contact", Toast.LENGTH_SHORT).show();
+                    Intent contactIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", "dazed11confused17@gmail.com", null));
+                    contactIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+                    context.startActivity(Intent.createChooser(contactIntent, ""));
                     break;
                 case R.id.nav_share:
                     Toast.makeText(context, "Share", Toast.LENGTH_SHORT).show();
@@ -86,6 +87,11 @@ class MyNavItemListener {
             return true;
         }
     };
+    private WeakReference<MainActivity> mainActivityWeakReference;
+    private WeakReference<SettingsActivity> settingsWeakReference;
+    private WeakReference<SchedulerActivity> schedulerActivityWeakReference;
+    private DrawerLayout drawerLayout;
+    private TextView navHeaderEmail;
 
      MyNavItemListener(WeakReference reference){
          context=(Context) reference.get();

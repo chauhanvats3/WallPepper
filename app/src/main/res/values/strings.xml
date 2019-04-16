@@ -11,14 +11,14 @@
     <string name="action_settings">Settings</string>
     <string name="client_id">a68a45531fb8cb9d6f22bff8a1af925eb454f99c1adb0f2dce4f8f8da75ad2ed</string>
     <string-array name="pref_orientation_title">
-        <item>portrait</item>
-        <item>landscape</item>
-        <item>square</item>
+        <item>Portrait</item>
+        <item>Landscape</item>
+        <item>Squarish</item>
     </string-array>
     <string-array name="pref_orientation_values">
-        <item>portrait</item>
-        <item>landscape</item>
-        <item>squarish</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
     <string-array name="pref_scheduler_title">
         <item>1 Hour</item>
@@ -33,5 +33,15 @@
         <item>6</item>
         <item>12</item>
         <item>24</item>
+    </string-array>
+    <string-array name="pref_image_quality">
+        <item>Regular</item>
+        <item>HD</item>
+        <item>RAW</item>
+    </string-array>
+    <string-array name="pref_image_quality_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
     </string-array>
 </resources>

@@ -8,8 +8,8 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:background="@color/colorPrimary"
+        android:layout_height="323dp"
+        android:background="@color/design_default_color_background"
         android:theme="@style/AppTheme"
         app:behavior_hideable="true"
         app:behavior_peekHeight="60dp"

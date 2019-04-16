@@ -18,13 +18,12 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="WallPix"
-        android:shadowColor="@color/colorAccent"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
+        android:id="@+id/txtEmailNavHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:shadowColor="@color/colorAccent"
         android:text="dazed11confused17@gmail.com"/>
 
 </LinearLayout>

@@ -45,10 +45,10 @@ class MyDownloader extends AsyncTask<String, Void, Bitmap> {
         }
         Log.wtf(TAG, "PreDownload Phase<---------------------");
         searchQuery = sharedPreferences.getString(MyRuntimePreferences.KEY_PREF_SEARCH_QUERY, "");
-        if (context == 1)
+        /*if (context == 1)
             Toast.makeText(mainActivityWeakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(scheduledJobWeakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();
+            Toast.makeText(scheduledJobWeakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();*/
     }
 
     @Override
