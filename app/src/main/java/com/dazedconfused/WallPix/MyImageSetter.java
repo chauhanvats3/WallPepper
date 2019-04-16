@@ -14,6 +14,9 @@ import android.widget.Toast;
 import com.kc.unsplash.Unsplash;
 import com.kc.unsplash.models.Photo;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.dazedconfused.WallPix.MyRuntimePreferences.FEATURED;
+import static com.dazedconfused.WallPix.MyRuntimePreferences.ORIENTATION;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_APERTURE;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_CAMERA_MAKE;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_CAMERA_MODEL;
@@ -34,6 +37,11 @@ import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_RAW;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_REG;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_SIZE;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.PHOTO_UPLOADER_NAME;
+import static com.dazedconfused.WallPix.MyRuntimePreferences.SEARCH_QUERY;
+import static com.dazedconfused.WallPix.MyRuntimePreferences.SHARED_PREFS;
+import static com.kc.unsplash.Unsplash.ORIENTATION_LANDSCAPE;
+import static com.kc.unsplash.Unsplash.ORIENTATION_PORTRAIT;
+import static com.kc.unsplash.Unsplash.ORIENTATION_SQUARISH;
 
 class MyImageSetter {
 
@@ -45,6 +53,7 @@ class MyImageSetter {
     private WallpaperManager myWallpaperManager;
     private SharedPreferences defaultSharedPreferences;
     private SharedPreferences photoDataPrefs;
+    private SharedPreferences newSharedPrefs;
     private int devHeight;
     private int devWidth;
     private Photo myPhoto;
@@ -56,9 +65,10 @@ class MyImageSetter {
         mainImage = mainActivity.getImageView();
         myWallpaperManager = WallpaperManager.getInstance(mainActivity);
         defaultSharedPreferences = mainActivity.getMainSharedPreferences();
-        photoDataPrefs = mainActivity.getSharedPreferences(PHOTO_DATA, Context.MODE_PRIVATE);
+        photoDataPrefs = mainActivity.getSharedPreferences(PHOTO_DATA, MODE_PRIVATE);
         devHeight = mainActivity.getDeviceHeight();
         devWidth = mainActivity.getDeviceWidth();
+        newSharedPrefs=mainActivity.getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
     }
 
     MyImageSetter(MyScheduledJob myScheduledJob) {
@@ -69,7 +79,8 @@ class MyImageSetter {
         defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         devHeight = myScheduledJob.getDeviceHeight();
         devWidth = myScheduledJob.getDeviceWidth();
-        photoDataPrefs = myScheduledJob.getSharedPreferences(PHOTO_DATA, Context.MODE_PRIVATE);
+        photoDataPrefs = myScheduledJob.getSharedPreferences(PHOTO_DATA, MODE_PRIVATE);
+        newSharedPrefs=myScheduledJob.getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
     }
 
     private void logImageDetails() {
@@ -121,7 +132,11 @@ class MyImageSetter {
         editor.putString(PHOTO_FOCAL_LENGTH, myPhoto.getExif().getFocalLength());
         editor.putString(PHOTO_APERTURE, myPhoto.getExif().getAperture());
         editor.putString(PHOTO_EXPOSURE, myPhoto.getExif().getExposureTime());
-        editor.putString(PHOTO_ISO, Integer.toString(myPhoto.getExif().getIso()));
+        try {
+            editor.putString(PHOTO_ISO, Integer.toString(myPhoto.getExif().getIso()));
+        }catch (Exception ex){
+            editor.putString(PHOTO_ISO, null);
+        }
         editor.putString(PHOTO_REG, myPhoto.getUrls().getRegular());
         editor.putString(PHOTO_RAW, myPhoto.getUrls().getRaw());
         editor.putString(PHOTO_FULL, myPhoto.getUrls().getFull());
@@ -163,9 +178,24 @@ class MyImageSetter {
         if (context instanceof MainActivity)
             getNewReference();
         MyRuntimePreferences.setImageSettingStatus(true);
-        boolean prefFeatured = defaultSharedPreferences.getBoolean(MyRuntimePreferences.KEY_PREF_FEATURED, true);
+        /*boolean prefFeatured = defaultSharedPreferences.getBoolean(MyRuntimePreferences.KEY_PREF_FEATURED, true);
         final String searchQuery = defaultSharedPreferences.getString(MyRuntimePreferences.KEY_PREF_SEARCH_QUERY, "");
-        String prefOrientation = defaultSharedPreferences.getString(MyRuntimePreferences.KEY_PREF_ORIENTATION, "portrait");
+        String prefOrientation = defaultSharedPreferences.getString(MyRuntimePreferences.KEY_PREF_ORIENTATION, "portrait");*/
+        boolean prefFeatured=newSharedPrefs.getBoolean(FEATURED,true);
+        final String searchQuery=newSharedPrefs.getString(SEARCH_QUERY,"");
+        int prefOrientationInt=newSharedPrefs.getInt(ORIENTATION,1);
+        String prefOrientation="";
+        switch (prefOrientationInt){
+            case 1:
+                prefOrientation=ORIENTATION_PORTRAIT;
+                break;
+            case 2:
+                prefOrientation=ORIENTATION_LANDSCAPE;
+                break;
+            case 3:
+                prefOrientation=ORIENTATION_SQUARISH;
+                break;
+        }
         unsplash.getRandomPhoto("", prefFeatured, "", searchQuery, null, null, prefOrientation, new Unsplash.OnPhotoLoadedListener() {
             @Override
             public void onComplete(final Photo photo) {
