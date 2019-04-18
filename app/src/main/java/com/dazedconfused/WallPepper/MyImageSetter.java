@@ -6,12 +6,15 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.kc.unsplash.Unsplash;
 import com.kc.unsplash.models.Photo;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.FEATURED;
@@ -69,6 +72,7 @@ class MyImageSetter {
     private Photo myPhoto;
     private String country;
     private String city;
+    private Target mTarget;
 
 
     MyImageSetter(MainActivity mainActivity) {
@@ -119,6 +123,24 @@ class MyImageSetter {
     private void getNewReference() {
 
         mainImage = MainActivity.getMActivityWeakReference().get().getImageView();
+    }
+
+    private void setWallpaper(Bitmap bitmap) {
+
+        try {
+            myWallpaperManager.setBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (context instanceof MainActivity) {
+            getNewReference();
+            mainImage.setImageBitmap(bitmap);
+        }
+        MyRuntimePreferences.setImageSettingStatus(false);
+        Log.wtf(TAG, "Image set<-------------------------");
+        Toast.makeText(context, "Image set", Toast.LENGTH_SHORT).show();
+        if (context instanceof MainActivity)
+            MainActivity.getMInstanceActivityContext().setupPhotoDetails();
     }
 
     private void savePhotoData() {
@@ -215,7 +237,7 @@ class MyImageSetter {
         editor.putString(PHOTO_CAMERA_MODEL, model);
         editor.putString(PHOTO_SIZE, myPhoto.getHeight() + "(h) X " + myPhoto.getWidth() + "(w)");
         editor.putString(PHOTO_HOTLINK, hotlink);
-        editor.putString(PHOTO_ID,myPhoto.getId());
+        editor.putString(PHOTO_ID, myPhoto.getId());
         editor.apply();
     }
 
@@ -276,32 +298,40 @@ class MyImageSetter {
                 myPhoto = photo;
                 savePhotoData();
                 logImageDetails();
-                String regPhotoUrl = photo.getUrls().getRegular();
+                String regPhotoUrl = photo.getUrls().getFull();
                 Log.wtf(TAG, "Link Acquired<------------------------------");
                 //Without picasso downloading image
-                MyDownloader downloadImage = new MyDownloader(new AsyncResponse() {
+                /*MyDownloader downloadImage = new MyDownloader(new AsyncResponse() {
                     @Override
                     public void processFinish(Bitmap image) {
 
                         Bitmap croppedImage;
                         croppedImage = scaleCenterCrop(image, devHeight, devWidth);
-                        try {
-                            myWallpaperManager.setBitmap(croppedImage);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        if (context instanceof MainActivity) {
-                            getNewReference();
-                            mainImage.setImageBitmap(image);
-                        }
-                        MyRuntimePreferences.setImageSettingStatus(false);
-                        Log.wtf(TAG, "Image set<-------------------------");
-                        Toast.makeText(context, "Image set", Toast.LENGTH_SHORT).show();
-                        if (context instanceof MainActivity)
-                            MainActivity.getMInstanceActivityContext().setupPhotoDetails();
-                    }
+                            setWallpaper(croppedImage);
+                      }
                 });
-                downloadImage.execute(regPhotoUrl);
+                downloadImage.execute(regPhotoUrl);*/
+
+                //With Picasso
+                 mTarget=new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        setWallpaper(bitmap);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                };
+
+                Picasso.get().load(regPhotoUrl).centerCrop().resize(devWidth,devHeight).into(mTarget);
+                //Picasso ends
             }
 
             @Override

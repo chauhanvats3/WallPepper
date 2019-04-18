@@ -70,45 +70,45 @@ public class MainActivity extends AppCompatActivity {
     private static WeakReference<MainActivity> activityWeakReference;
     private static int DEVICE_WIDTH;
     private static int DEVICE_HEIGHT;
-    BroadcastReceiver onComplete=new BroadcastReceiver() {
+    private ImageView mainImage;
+    private DrawerLayout drawerLayout;
+    private int backPresses;
+    private SharedPreferences photoData;
+    BroadcastReceiver onComplete = new BroadcastReceiver() {
         public void onReceive(Context ctxt, Intent intent) {
             // Do Something
-            String hotlink=photoData.getString(PHOTO_HOTLINK,"");
-            if (hotlink!=null) {
-                hotlink=hotlink.concat("?client_id=");
-                hotlink=hotlink.concat(getResources().getString(R.string.client_id));
-            }else{
-                Log.wtf(TAG,"HOTLINK NOT CORRECT<----------------");
+            String hotlink = photoData.getString(PHOTO_HOTLINK, "");
+            if (hotlink != null) {
+                hotlink = hotlink.concat("?client_id=");
+                hotlink = hotlink.concat(getResources().getString(R.string.client_id));
+            } else {
+                Log.wtf(TAG, "HOTLINK NOT CORRECT<----------------");
             }
             OkHttpClient client = new OkHttpClient();
 
-            String url =hotlink;
+            String url = hotlink;
 
             Request request = new Request.Builder()
                     .url(url)
                     .build();
-           // Toast.makeText(ctxt, "Downloading Completed Modafuka!", Toast.LENGTH_SHORT).show();
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
+
                     e.printStackTrace();
                 }
 
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    if(response.isSuccessful()){
-                        Log.wtf(TAG,"Hotlinking Successful!<--------------------");
-                    }
-                    else Log.wtf(TAG,"Hotlinking UNSUCCESSSFULL<----------------");
-                    Log.wtf(TAG,response.body().string());
+
+                    if (response.isSuccessful()) {
+                        Log.wtf(TAG, "Hotlinking Successful!<--------------------");
+                    } else Log.wtf(TAG, "Hotlinking UNSUCCESSSFULL<----------------");
+                    Log.wtf(TAG, response.body().string());
                 }
             });
         }
     };
-    private ImageView mainImage;
-    private DrawerLayout drawerLayout;
-    private int backPresses;
-    private SharedPreferences photoData;
     private BottomSheetBehavior bottomSheetBehavior;
     private ImageView downloadButton;
     private TextView uploadedBy;
@@ -126,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView iso;
     private TextView colorPalette;
     private String qualityName;
+    private SharedPreferences appPrefs;
 
     public static MainActivity getMInstanceActivityContext() {
 
@@ -156,7 +157,6 @@ public class MainActivity extends AppCompatActivity {
         DEVICE_HEIGHT = size.y;
     }
 
-
     public DrawerLayout getDrawerLayout() {
 
         return drawerLayout;
@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putInt(KEY_DEVICE_WIDTH, DEVICE_WIDTH);
         editor.apply();
     }
-    private SharedPreferences appPrefs;
 
     public void setupPhotoDetails() {
 
@@ -196,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
             focalLength.setText(photoData.getString(PHOTO_FOCAL_LENGTH, PHOTO_DEFAULT_VALUE) + "mm");
         else
             focalLength.setText("n/a");
-        if(photoData.getString(PHOTO_APERTURE, PHOTO_DEFAULT_VALUE)!=null)
-        aperture.setText("f/"+photoData.getString(PHOTO_APERTURE, PHOTO_DEFAULT_VALUE));
+        if (photoData.getString(PHOTO_APERTURE, PHOTO_DEFAULT_VALUE) != null)
+            aperture.setText("f/" + photoData.getString(PHOTO_APERTURE, PHOTO_DEFAULT_VALUE));
         else
             aperture.setText("n/a");
         exposure.setText(photoData.getString(PHOTO_EXPOSURE, PHOTO_DEFAULT_VALUE));
@@ -340,7 +339,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 downloadUsingManager(downloadLink);
-                Toast.makeText(MainActivity.this, "Downloading in "+qualityName, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Downloading in " + qualityName, Toast.LENGTH_SHORT).show();
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
@@ -366,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void downloadUsingManager(String downloadUrlOfImage) {
 
-        String filename = photoData.getString(PHOTO_ID, "1234567") +"-"+ qualityName + ".jpg";
+        String filename = photoData.getString(PHOTO_ID, "1234567") + "-" + qualityName + ".jpg";
 
         File direct =
                 new File(Environment
@@ -394,4 +393,5 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
     }
+
 }
