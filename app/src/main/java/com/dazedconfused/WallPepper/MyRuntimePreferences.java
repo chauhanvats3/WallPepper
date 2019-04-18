@@ -1,4 +1,4 @@
-package com.dazedconfused.WallPix;
+package com.dazedconfused.WallPepper;
 
 class MyRuntimePreferences {
     static final String SHARED_PREFS = "sharedPrefs";

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WallPix</string>
+    <string name="app_name">WallPepper</string>
     <string name="enter_tags" translatable="false">Enter Tags Separated By Commas</string>
     <string name="todo">TODO</string>
     <string name="title_activity_nav_drawer">NavDrawer</string>

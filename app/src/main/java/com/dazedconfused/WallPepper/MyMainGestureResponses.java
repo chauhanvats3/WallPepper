@@ -1,31 +1,43 @@
-package com.dazedconfused.WallPix;
+package com.dazedconfused.WallPepper;
+
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.lang.ref.WeakReference;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-class MySettingsGestureResponses {
-    private static final String TAG = "SchedulerGestureResponses";
+class MyMainGestureResponses {
+    private static final String TAG = "MyMainGesture";
 
-    private WeakReference<SettingsActivity> schedulerReference = SettingsActivity.getWeakReference();
-
+    private WeakReference<MainActivity> mainActivityWeakReference = MainActivity.getMActivityWeakReference();
+    private BottomSheetBehavior bottomSheetBehavior;
     //THESE ARE SWIPE DEFINITIONS FOR MAIN ACTIVITY
-    MyOnSwipeListener schedulerGestures = new MyOnSwipeListener(schedulerReference.get()) {
+    MyOnSwipeListener mainActivityGestures = new MyOnSwipeListener(mainActivityWeakReference.get()) {
+        MyImageSetter imageSetter;
+
+
         @Override
         public void onClick() {
             super.onClick();
+            if (!MyRuntimePreferences.isSettingImage()) {
+                imageSetter = new MyImageSetter(mainActivityWeakReference.get());
+                imageSetter.setImage();
+            } else
+                mainActivityWeakReference.get().closeKeyboard();
         }
 
         @Override
         public void onDoubleClick() {
             super.onDoubleClick();
+            mainActivityWeakReference.get().closeKeyboard();
             // your on onDoubleClick here
         }
 
         @Override
         public void onLongClick() {
             super.onLongClick();
+            mainActivityWeakReference.get().closeKeyboard();
             // your on onLongClick here
         }
 
@@ -48,9 +60,10 @@ class MySettingsGestureResponses {
         @Override
         public void onSwipeRight() {
             super.onSwipeRight();
-            DrawerLayout drawerLayout = schedulerReference.get().getDrawerLayout();
+            DrawerLayout drawerLayout = mainActivityWeakReference.get().getDrawerLayout();
             drawerLayout.openDrawer(GravityCompat.START);
             // your swipe right here.
         }
     };
+
 }

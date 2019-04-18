@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.dazedconfused.WallPix"
+        applicationId "com.dazedconfused.WallPepper"
         minSdkVersion 22
         targetSdkVersion 28
         versionCode 1

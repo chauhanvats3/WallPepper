@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.dazedconfused.WallPix">
+    package="com.dazedconfused.WallPepper">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -17,11 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SettingsActivity"
+        <activity android:name="com.dazedconfused.WallPepper.SettingsActivity"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".MainActivity"
+            android:name="com.dazedconfused.WallPepper.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             >
@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".MyScheduledJob"
+        <service android:name="com.dazedconfused.WallPepper.MyScheduledJob"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
     </application>
 

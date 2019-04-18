@@ -1,4 +1,4 @@
-package com.dazedconfused.WallPix;
+package com.dazedconfused.WallPepper;
 
 import android.annotation.SuppressLint;
 import android.app.job.JobInfo;
@@ -29,18 +29,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import static com.dazedconfused.WallPix.MyRuntimePreferences.FEATURED;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.INTERVALS;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.IS_JOB_GOING;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.NO_OF_JOBS_DONE;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.ORIENTATION;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.PREF_DURATION_SPINNER_POSITION;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.PREF_ORIENTATION_SPINNER_POSITION;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.PREF_QUALITY_SPINNER_POSITION;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.QUALITY;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.SEARCH_QUERY;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.SHARED_PREFS;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.SWITCH_STATUS;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.FEATURED;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.INTERVALS;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.IS_JOB_GOING;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.NO_OF_JOBS_DONE;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.ORIENTATION;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_DURATION_SPINNER_POSITION;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_ORIENTATION_SPINNER_POSITION;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_QUALITY_SPINNER_POSITION;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.QUALITY;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.SEARCH_QUERY;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.SHARED_PREFS;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.SWITCH_STATUS;
 
 public class SettingsActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.dazedconfused.WallPix;
+package com.dazedconfused.WallPepper;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

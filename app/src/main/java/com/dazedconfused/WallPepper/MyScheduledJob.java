@@ -1,4 +1,4 @@
-package com.dazedconfused.WallPix;
+package com.dazedconfused.WallPepper;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
@@ -9,11 +9,11 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
-import static com.dazedconfused.WallPix.MyRuntimePreferences.IS_JOB_GOING;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.KEY_DEVICE_HEIGHT;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.KEY_DEVICE_WIDTH;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.NO_OF_JOBS_DONE;
-import static com.dazedconfused.WallPix.MyRuntimePreferences.SHARED_PREFS;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.IS_JOB_GOING;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.KEY_DEVICE_HEIGHT;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.KEY_DEVICE_WIDTH;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.NO_OF_JOBS_DONE;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.SHARED_PREFS;
 
 public class MyScheduledJob extends JobService {
     private static final String TAG = "MyScheduledJob";

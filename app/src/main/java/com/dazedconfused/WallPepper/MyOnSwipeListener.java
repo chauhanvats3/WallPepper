@@ -1,4 +1,4 @@
-package com.dazedconfused.WallPix;
+package com.dazedconfused.WallPepper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
