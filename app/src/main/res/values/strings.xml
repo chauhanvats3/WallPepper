@@ -35,9 +35,9 @@
         <item>24</item>
     </string-array>
     <string-array name="pref_image_quality">
-        <item>Regular</item>
-        <item>HD</item>
-        <item>RAW</item>
+        <item>Regular (~500KB)</item>
+        <item>HD (~3MB)</item>
+        <item>RAW (~10MB)</item>
     </string-array>
     <string-array name="pref_image_quality_values">
         <item>1</item>

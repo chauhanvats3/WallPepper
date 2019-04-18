@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
+import static com.dazedconfused.WallPix.MyRuntimePreferences.IS_JOB_GOING;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.KEY_DEVICE_HEIGHT;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.KEY_DEVICE_WIDTH;
+import static com.dazedconfused.WallPix.MyRuntimePreferences.NO_OF_JOBS_DONE;
 import static com.dazedconfused.WallPix.MyRuntimePreferences.SHARED_PREFS;
 
 public class MyScheduledJob extends JobService {
@@ -18,7 +20,7 @@ public class MyScheduledJob extends JobService {
     private static int DEVICE_WIDTH;
     private static int DEVICE_HEIGHT;
     private static WeakReference<MyScheduledJob> jobWeakReference;
-    private boolean jobCancelled = false;
+    private static boolean jobStatus;
 
     public static WeakReference<MyScheduledJob> getScheduleJobReference() {
         return jobWeakReference;
@@ -47,10 +49,18 @@ public class MyScheduledJob extends JobService {
         super.onCreate();
         jobWeakReference = new WeakReference<>(this);
         loadDeviceDisplayInfo();
+        SharedPreferences sharedPreferences=getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+        jobStatus=sharedPreferences.getBoolean(IS_JOB_GOING,true);
     }
 
     @Override
     public boolean onStartJob(JobParameters params) {
+        SharedPreferences sharedPreferences=getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+        int noOfJobs=sharedPreferences.getInt(NO_OF_JOBS_DONE,0);
+        noOfJobs++;
+        SharedPreferences.Editor editor =sharedPreferences.edit();
+        editor.putInt(NO_OF_JOBS_DONE,noOfJobs);
+        editor.apply();
         Toast.makeText(this, "Job Started Now", Toast.LENGTH_SHORT).show();
         Log.wtf(TAG, "onStartJob called<------------------------------");
         doBackgroundWork(params);
@@ -61,8 +71,6 @@ public class MyScheduledJob extends JobService {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (jobCancelled)
-                    return;
                 MyImageSetter imageSetter = new MyImageSetter(jobWeakReference.get());
                 imageSetter.setImage();
                 jobFinished(params, false);
@@ -72,7 +80,7 @@ public class MyScheduledJob extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
-        jobCancelled = true;
+        jobStatus = false;
         Toast.makeText(this, "Job Cancelled!", Toast.LENGTH_SHORT).show();
         return true;
     }

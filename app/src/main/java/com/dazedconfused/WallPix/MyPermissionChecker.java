@@ -17,6 +17,7 @@ import androidx.core.content.PermissionChecker;
 
 class MyPermissionChecker {
     private static final String TAG = "MyPermissionChecker";
+    private int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE;
 
     private int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
 
@@ -50,5 +51,9 @@ class MyPermissionChecker {
             Drawable currentWallpaper = myWallpaperManager.getFastDrawable();
             mainImage.setImageDrawable(currentWallpaper);
         }
+        ActivityCompat.requestPermissions(myAppActivity,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+
     }
 }

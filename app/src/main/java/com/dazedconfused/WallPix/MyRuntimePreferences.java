@@ -4,8 +4,11 @@ class MyRuntimePreferences {
     static final String SHARED_PREFS = "sharedPrefs";
     static final String SWITCH_STATUS = "switchStatus";
     static final String INTERVALS = "pref_intervals";
+    static final String NO_OF_JOBS_DONE="noOfJobsDone";
+    static final String IS_JOB_GOING="isJobGoing";
     static final String QUALITY="pref_quality";
     static final String ORIENTATION="pref_orientation";
+    static final String PHOTO_ID="photoID";
     static final String FEATURED="pref_featured";
     static final String SEARCH_QUERY="pref_search_query_new";
     static final String PREF_DURATION_SPINNER_POSITION = "durationSpinnerPosition";
