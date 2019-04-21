@@ -7,6 +7,8 @@ import android.app.WallpaperManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.IBinder;
 import android.util.Log;
@@ -25,6 +27,7 @@ import androidx.core.app.NotificationCompat;
 
 import static com.dazedconfused.WallPepper.App.CHANNEL_ID;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.KEY_DEVICE_HEIGHT;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.KEY_DEVICE_WIDTH;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.PHOTO_APERTURE;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.PHOTO_CAMERA_MAKE;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.PHOTO_CAMERA_MODEL;
@@ -58,6 +61,8 @@ import static com.kc.unsplash.Unsplash.ORIENTATION_SQUARISH;
 
 public class ImageSetterService extends Service {
     private static final String TAG = "ImageSetterService";
+    private static int devHeight;
+    private static int devWidth;
     private String model;
     private String focalLength;
     private String aperture;
@@ -70,17 +75,17 @@ public class ImageSetterService extends Service {
     private String clientId;
     private Unsplash unsplash;
     private ImageView mainImage;
+    private String usableSearchQuery;
     private WallpaperManager myWallpaperManager;
     private SharedPreferences photoDataPrefs;
     private SharedPreferences newSharedPrefs;
-    private int devHeight;
-    private int devWidth;
     private String name;
     private Photo myPhoto;
     private String country;
     private String city;
     private Target mTarget;
     private int context;
+    private String photoUsableUrl;
     private WeakReference<MainActivity> mainActivityWeakReference;
     private WeakReference<MyScheduledJob> scheduledJobWeakReference;
 
@@ -90,12 +95,12 @@ public class ImageSetterService extends Service {
         super.onCreate();
         Log.d(TAG, "onCreate: started<--------------");
         try {
-            if(!MainActivity.getMInstanceActivityContext().isFinishing()){
+            if (!MainActivity.getMInstanceActivityContext().isFinishing()) {
 
                 context = 1;
                 mainActivityWeakReference = MainActivity.getMActivityWeakReference();
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
             context = 2;
             scheduledJobWeakReference = MyScheduledJob.getScheduleJobReference();
@@ -109,8 +114,8 @@ public class ImageSetterService extends Service {
         myWallpaperManager = WallpaperManager.getInstance(this);
         photoDataPrefs = getSharedPreferences(PHOTO_DATA, MODE_PRIVATE);
         newSharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        devHeight = newSharedPrefs.getInt(KEY_DEVICE_HEIGHT,1080);
-        devWidth = newSharedPrefs.getInt(KEY_DEVICE_HEIGHT,720);
+        devHeight = newSharedPrefs.getInt(KEY_DEVICE_HEIGHT, 1080);
+        devWidth = newSharedPrefs.getInt(KEY_DEVICE_WIDTH, 720);
         Log.d(TAG, "onCreate: ended<--------------");
 
     }
@@ -123,11 +128,11 @@ public class ImageSetterService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
-
+        usableSearchQuery = newSharedPrefs.getString(PREF_SEARCH_QUERY, "");
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("WallPepper")
-                .setContentText("Setting Image")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setContentTitle("Setting " + usableSearchQuery + " Image")
+                .setContentText("Please Wait a bit")
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
@@ -205,48 +210,9 @@ public class ImageSetterService extends Service {
                         regPhotoUrl = null;
                 }
                 Log.d(TAG, type + " Link Acquired<------------------------------");
-                //Without picasso downloading image
-                /*MyDownloader downloadImage = new MyDownloader(new AsyncResponse() {
-                    @Override
-                    public void processFinish(Bitmap image) {
-
-                        Bitmap croppedImage;
-                        croppedImage = scaleCenterCrop(image, devHeight, devWidth);
-                            setWallpaper(croppedImage);
-                      }
-                });
-                downloadImage.execute(regPhotoUrl);*/
-
-                //With Picasso
-                mTarget = new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-                        Log.d(TAG, "onBitmapLoaded: <-------------");
-                        mySetWallpaper(bitmap);
-                       /* try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }*/
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-                        Log.d(TAG, "onBitmapFailed: <---------------");
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                        Log.d(TAG, "onPrepareLoad: <-------------------");
-                    }
-                };
-                Log.d(TAG, "Before Picasso run line <------------");
-                Picasso.get().load(regPhotoUrl).centerCrop().resize(devWidth, devHeight).into(mTarget);
-                Log.d(TAG, "After Picasso run line<-------------");
-                //Picasso ends
+                photoUsableUrl = regPhotoUrl;
+                setWithoutPicasso(photoUsableUrl);
+                //setWithPicasso(photoUsableUrl);
             }
 
             @Override
@@ -264,6 +230,50 @@ public class ImageSetterService extends Service {
         });
     }
 
+    private void setWithoutPicasso(String regPhotoUrl) {
+
+        Log.d(TAG, "setWithoutPicasso: <---------------------");
+        MyDownloader downloadImage = new MyDownloader(new AsyncResponse() {
+            @Override
+            public void processFinish(Bitmap image) {
+
+                Bitmap croppedImage;
+                croppedImage = scaleCenterCrop(image, devHeight, devWidth);
+                mySetWallpaper(croppedImage);
+            }
+        });
+        downloadImage.execute(regPhotoUrl);
+    }
+
+    private void setWithPicasso(String regPhotoUrl) {
+
+        Log.d(TAG, "setWithPicasso: <-----------------------");
+        mTarget = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                Log.d(TAG, "onBitmapLoaded: <-------------");
+                mySetWallpaper(bitmap);
+
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+                Log.d(TAG, "onBitmapFailed: <---------------");
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                Log.d(TAG, "onPrepareLoad: <-------------------");
+            }
+        };
+        Log.d(TAG, "Before Picasso run line <------------");
+        Picasso.get().load(regPhotoUrl).resize(devWidth, devHeight).centerCrop().into(mTarget);
+        Log.d(TAG, "After Picasso run line<-------------");
+        //Picasso ends
+    }
 
     @Nullable
     @Override
@@ -274,6 +284,7 @@ public class ImageSetterService extends Service {
 
     private void mySetWallpaper(Bitmap bitmap) {
 
+        Log.d(TAG, "mySetWallpaper: <-----------------");
         try {
             myWallpaperManager.setBitmap(bitmap);
         } catch (Exception e) {
@@ -288,11 +299,49 @@ public class ImageSetterService extends Service {
 
         Toast.makeText(this, "Image set", Toast.LENGTH_SHORT).show();
 
+
         if (MainActivity.getMInstanceActivityContext() != null)
             MainActivity.getMInstanceActivityContext().setupPhotoDetails();
 
-         Intent serviceIntent = new Intent(this, ImageSetterService.class);
-         stopService(serviceIntent);
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        Intent serviceIntent = new Intent(this, ImageSetterService.class);
+        stopService(serviceIntent);
+    }
+
+
+    private Bitmap scaleCenterCrop(Bitmap source, int newHeight, int newWidth) {
+
+        Log.d(TAG, "scaleCenterCrop: <-------------------");
+        int sourceWidth = source.getWidth();
+        int sourceHeight = source.getHeight();
+        // Compute the scaling factors to fit the new height and width, respectively.
+        // To cover the final image, the final scaling will be the bigger
+        // of these two.
+        float xScale = (float) newWidth / sourceWidth;
+        float yScale = (float) newHeight / sourceHeight;
+        float scale = Math.max(xScale, yScale);
+        // Now get the size of the source bitmap when scaled
+        float scaledWidth = scale * sourceWidth;
+        float scaledHeight = scale * sourceHeight;
+        // Let's find out the upper left coordinates if the scaled bitmap
+        // should be centered in the new size give by the parameters
+        float left = (newWidth - scaledWidth) / 2;
+        float top = (newHeight - scaledHeight) / 2;
+        // The target rectangle for the new, scaled version of the source bitmap will now
+        // be
+        RectF targetRect = new RectF(left, top, left + scaledWidth, top + scaledHeight);
+        // Finally, we create a new bitmap of the specified size and draw our new,
+        // scaled bitmap onto it.
+        Bitmap dest = Bitmap.createBitmap(newWidth, newHeight, source.getConfig());
+        Canvas canvas = new Canvas(dest);
+        canvas.drawBitmap(source, null, targetRect, null);
+        Log.d(TAG, "scaleCenterCrop: ended<----------------");
+        return dest;
     }
 
     private void savePhotoData() {
@@ -402,8 +451,8 @@ public class ImageSetterService extends Service {
         Log.wtf(TAG, "getID():" + myPhoto.getId());
         Log.wtf(TAG, "First Name:" + name);
         //Log.wtf(TAG, "Username:" + myPhoto.getUser().getUsername());
-        //Log.wtf(TAG, "Device w:" + devWidth + " h:" + devHeight);
-        //Log.wtf(TAG, "Height: " + myPhoto.getHeight() + " Width:" + myPhoto.getWidth());
+        Log.wtf(TAG, "Device w:" + devWidth + " h:" + devHeight);
+        Log.wtf(TAG, "Height: " + myPhoto.getHeight() + " Width:" + myPhoto.getWidth());
         //Log.wtf(TAG, "Likes:" + myPhoto.getLikes());
         //Log.wtf(TAG, "getPhotos():" + myPhoto.getLinks().getPhotos());
         //Log.wtf(TAG, "getSelf():" + myPhoto.getLinks().getSelf());
@@ -413,10 +462,12 @@ public class ImageSetterService extends Service {
         //Log.wtf(TAG, "Full:" + myPhoto.getUrls().getFull());
         //Log.wtf(TAG, "download:" + myPhoto.getLinks().getDownload());
         Log.wtf(TAG, "Hotlink : " + hotlink);
+        Log.d(TAG, "logImageDetails: ended <-----------------------");
     }
 
     private void getNewReference() {
 
+        Log.d(TAG, "getNewReference: <------------------------");
         mainImage = MainActivity.getMInstanceActivityContext().getImageView();
     }
 
