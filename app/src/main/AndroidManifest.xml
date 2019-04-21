@@ -8,8 +8,9 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -33,6 +34,7 @@
         </activity>
         <service android:name="com.dazedconfused.WallPepper.MyScheduledJob"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name=".ImageSetterService" />
     </application>
 
 </manifest>

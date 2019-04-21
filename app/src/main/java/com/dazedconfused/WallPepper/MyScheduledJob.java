@@ -2,12 +2,15 @@ package com.dazedconfused.WallPepper;
 
 import android.app.job.JobParameters;
 import android.app.job.JobService;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
+
+import androidx.core.content.ContextCompat;
 
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.IS_JOB_GOING;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.KEY_DEVICE_HEIGHT;
@@ -34,9 +37,6 @@ public class MyScheduledJob extends JobService {
         return DEVICE_WIDTH;
     }
 
-    public SharedPreferences getSharedPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(jobWeakReference.get());
-    }
 
     public void loadDeviceDisplayInfo() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
@@ -46,11 +46,23 @@ public class MyScheduledJob extends JobService {
 
     @Override
     public void onCreate() {
+
         super.onCreate();
+        Log.d(TAG,"onCreate<-----------------");
         jobWeakReference = new WeakReference<>(this);
         loadDeviceDisplayInfo();
         SharedPreferences sharedPreferences=getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
         jobStatus=sharedPreferences.getBoolean(IS_JOB_GOING,true);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.wtf(TAG,"OnDestroy<-------------");
+        SharedPreferences sharedPreferences=getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putBoolean(IS_JOB_GOING,false);
+        editor.apply();
+        super.onDestroy();
     }
 
     @Override
@@ -68,11 +80,20 @@ public class MyScheduledJob extends JobService {
     }
 
     private void doBackgroundWork(final JobParameters params) {
+        Log.d(TAG,"doBackgroundWork<----------------");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                MyImageSetter imageSetter = new MyImageSetter(jobWeakReference.get());
-                imageSetter.setImage();
+              /*  try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }*/
+                //Log.d(TAG, "run: After thread wake<---------------");
+                Intent serviceIntent = new Intent(jobWeakReference.get(), ImageSetterService.class);
+
+                ContextCompat.startForegroundService(jobWeakReference.get(), serviceIntent);
+
                 jobFinished(params, false);
             }
         }).start();
@@ -80,8 +101,11 @@ public class MyScheduledJob extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
+        Log.d(TAG,"onStopJob<-----------------");
         jobStatus = false;
         Toast.makeText(this, "Job Cancelled!", Toast.LENGTH_SHORT).show();
         return true;
     }
+
+
 }

@@ -32,13 +32,13 @@ class MyDownloader extends AsyncTask<String, Void, Bitmap> {
         if (MainActivity.getMInstanceActivityContext() != null) {
             mainActivityWeakReference = MainActivity.getMActivityWeakReference();
             context = 1;
-            Log.wtf(TAG,"Main Activity Reference got.<-------------------");
+            Log.d(TAG,"Main Activity Reference got.<-------------------");
         } else if (MyScheduledJob.getScheduleJobReference() != null) {
             scheduledJobWeakReference = MyScheduledJob.getScheduleJobReference();
             context = 2;
-            Log.wtf(TAG,"Scheduler Reference got<-----------------------");
+            Log.d(TAG,"Scheduler Reference got<-----------------------");
         }
-        Log.wtf(TAG, "PreDownload Phase<---------------------");
+        Log.d(TAG, "PreDownload Phase<---------------------");
         /*if (context == 1)
             Toast.makeText(mainActivityWeakReference.get(), "Downloading " + searchQuery + " Image", Toast.LENGTH_SHORT).show();
         else
@@ -49,13 +49,14 @@ class MyDownloader extends AsyncTask<String, Void, Bitmap> {
     protected Bitmap doInBackground(String... urls) {
         URL url;
         HttpURLConnection httpURLConnection;
-        Log.wtf(TAG, "Downloading The image<--------------------");
+        Log.d(TAG, "Downloading The image<--------------------");
         try {
             url = new URL(urls[0]);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             InputStream is = httpURLConnection.getInputStream();
             return BitmapFactory.decodeStream(is);
         } catch (Exception e) {
+            Log.d(TAG,"downloadFailed<----------");
             e.printStackTrace();
             if (context == 1)
                 Toast.makeText(mainActivityWeakReference.get(), "Couldn't Download Image.", Toast.LENGTH_SHORT).show();

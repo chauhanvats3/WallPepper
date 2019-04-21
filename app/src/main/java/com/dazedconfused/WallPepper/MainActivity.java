@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -59,7 +60,7 @@ import static com.dazedconfused.WallPepper.MyRuntimePreferences.PHOTO_RAW;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.PHOTO_REG;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.PHOTO_SIZE;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.PHOTO_UPLOADER_NAME;
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.QUALITY;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_DOWNLOAD_CHECKED_RDBTN;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.SHARED_PREFS;
 
 public class MainActivity extends AppCompatActivity {
@@ -88,9 +89,13 @@ public class MainActivity extends AppCompatActivity {
 
             String url = hotlink;
 
-            Request request = new Request.Builder()
-                    .url(url)
-                    .build();
+            Request request = null;
+            if (url != null) {
+                request = new Request.Builder()
+                        .url(url)
+                        .build();
+            }
+            assert request != null;
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -317,22 +322,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                int quality = appPrefs.getInt(QUALITY, 1);
+                int quality = appPrefs.getInt(PREF_DOWNLOAD_CHECKED_RDBTN, R.id.rdbtnDwnldRegular);
 
                 final String fileName = photoData.getString(PHOTO_ID, "123");
                 String downloadLink = null;
                 switch (quality) {
-                    case 1:
+                    case R.id.rdbtnDwnldRegular:
                         downloadLink = photoData.getString(PHOTO_REG, "");
                         qualityName = "Regular";
                         //Regular
                         break;
-                    case 2:
+                    case R.id.rdbtnDwnldHD:
                         downloadLink = photoData.getString(PHOTO_FULL, "");
                         //HD
                         qualityName = "HD";
                         break;
-                    case 3:
+                    case R.id.rdbtnDwnldRAW:
                         downloadLink = photoData.getString(PHOTO_RAW, "");
                         //RAW
                         qualityName = "RAW";
@@ -350,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 String photoLink = photoData.getString(PHOTO_LINK, "");
                 if (photoLink != null) {
+                    photoLink=photoLink.concat("?utm_source=WallPepper&utm_medium=referral");
                     Uri uri = Uri.parse(photoLink);
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));

@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -29,43 +30,37 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.FEATURED;
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.INTERVALS;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.IS_JOB_GOING;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.NO_OF_JOBS_DONE;
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.ORIENTATION;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_DOWNLOAD_CHECKED_RDBTN;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_DURATION_SPINNER_POSITION;
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_ORIENTATION_SPINNER_POSITION;
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_QUALITY_SPINNER_POSITION;
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.QUALITY;
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.SEARCH_QUERY;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_FEATURED;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_INTERVALS;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_ORIENTATION_CHECKED_RDBTN;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_SEARCH_QUERY;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_SWITCH_STATUS;
+import static com.dazedconfused.WallPepper.MyRuntimePreferences.PREF_WALLPAPER_CHECKED_RDBTN;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.SHARED_PREFS;
-import static com.dazedconfused.WallPepper.MyRuntimePreferences.SWITCH_STATUS;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
     private static WeakReference<SettingsActivity> activityWeakReference;
     private static int interval;
-    private static int orientation;
-    private static int quality;
     private static int durationSpinnerPosition;
-    private static int orientationSpinnerPosition;
-    private static int qualitySpinnerPosition;
     private final int JOB_ID = 6969;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
     private Switch switchButton;
     private Spinner durationSpinner;
-    private Spinner orientationSpinner;
-    private Spinner qualitySpinner;
     private CheckBox featuredPhotos;
     private EditText searchTags;
     private TextView durationTxtView;
+    private RadioGroup rdgrpWallpaperQuality;
+    private RadioGroup rdgrpOrientation;
+    private RadioGroup rdgrpDownloadQuality;
     private int first_spinner_duration = 0, first_spinner_duration_counter = 0;
-    private int first_spinner_orientation = 0, first_spinner_orientation_counter = 0;
-    private int first_spinner_quality = 0, first_spinner_quality_counter = 0;
 
 
     public static WeakReference<SettingsActivity> getWeakReference() {
@@ -74,42 +69,34 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void saveData() {
-
+        Log.d(TAG,"saveDATA<----------------");
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         durationSpinnerPosition = durationSpinner.getSelectedItemPosition();
-        orientationSpinnerPosition = orientationSpinner.getSelectedItemPosition();
-        qualitySpinnerPosition = qualitySpinner.getSelectedItemPosition();
         String stringArray[] = getResources().getStringArray(R.array.pref_scheduler_values);
         interval = Integer.parseInt(stringArray[durationSpinnerPosition]);
-        stringArray = getResources().getStringArray(R.array.pref_orientation_values);
-        orientation = Integer.parseInt(stringArray[orientationSpinnerPosition]);
-        stringArray = getResources().getStringArray(R.array.pref_image_quality_values);
-        quality = Integer.parseInt(stringArray[qualitySpinnerPosition]);
-        editor.putInt(INTERVALS, interval);
-        editor.putInt(ORIENTATION,orientation);
-        editor.putInt(QUALITY,quality);
-        editor.putBoolean(SWITCH_STATUS, switchButton.isChecked());
+        editor.putInt(PREF_INTERVALS, interval);
+        editor.putBoolean(PREF_SWITCH_STATUS, switchButton.isChecked());
         editor.putInt(PREF_DURATION_SPINNER_POSITION, durationSpinnerPosition);
-        editor.putInt(PREF_ORIENTATION_SPINNER_POSITION, orientationSpinnerPosition);
-        editor.putInt(PREF_QUALITY_SPINNER_POSITION, qualitySpinnerPosition);
-        editor.putBoolean(FEATURED,featuredPhotos.isChecked());
-        editor.putString(SEARCH_QUERY,searchTags.getText().toString());
+        editor.putBoolean(PREF_FEATURED, featuredPhotos.isChecked());
+        editor.putString(PREF_SEARCH_QUERY, searchTags.getText().toString());
+        editor.putInt(PREF_WALLPAPER_CHECKED_RDBTN, rdgrpWallpaperQuality.getCheckedRadioButtonId());
+        editor.putInt(PREF_ORIENTATION_CHECKED_RDBTN, rdgrpOrientation.getCheckedRadioButtonId());
+        editor.putInt(PREF_DOWNLOAD_CHECKED_RDBTN, rdgrpDownloadQuality.getCheckedRadioButtonId());
         editor.apply();
     }
 
     public void loadData() {
-
+        Log.d(TAG,"loadData<--------------------");
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        interval = sharedPreferences.getInt(INTERVALS, 1);
-        switchButton.setChecked(sharedPreferences.getBoolean(SWITCH_STATUS, false));
+        interval = sharedPreferences.getInt(PREF_INTERVALS, 1);
+        switchButton.setChecked(sharedPreferences.getBoolean(PREF_SWITCH_STATUS, false));
         durationSpinnerPosition = sharedPreferences.getInt(PREF_DURATION_SPINNER_POSITION, 1);
-        orientationSpinnerPosition = sharedPreferences.getInt(PREF_ORIENTATION_SPINNER_POSITION, 1);
-        qualitySpinnerPosition = sharedPreferences.getInt(PREF_QUALITY_SPINNER_POSITION, 1);
-        quality = sharedPreferences.getInt(QUALITY, 1);
-        orientation = sharedPreferences.getInt(ORIENTATION, 1);
-        featuredPhotos.setChecked(sharedPreferences.getBoolean(FEATURED,true));
-        searchTags.setText(sharedPreferences.getString(SEARCH_QUERY,""));
+        featuredPhotos.setChecked(sharedPreferences.getBoolean(PREF_FEATURED, true));
+        searchTags.setText(sharedPreferences.getString(PREF_SEARCH_QUERY, ""));
+        rdgrpWallpaperQuality.check(sharedPreferences.getInt(PREF_WALLPAPER_CHECKED_RDBTN, R.id.rdbtnWlprRegular));
+        rdgrpOrientation.check(sharedPreferences.getInt(PREF_ORIENTATION_CHECKED_RDBTN, R.id.rdbtnPortrait));
+        rdgrpDownloadQuality.check(sharedPreferences.getInt(PREF_DOWNLOAD_CHECKED_RDBTN, R.id.rdbtnDwnldRegular));
     }
 
 
@@ -137,11 +124,12 @@ public class SettingsActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.scheduler_toolbar);
         switchButton = findViewById(R.id.swichScheduler);
         durationSpinner = findViewById(R.id.spinnerInterval);
-        orientationSpinner = findViewById(R.id.spinnerOrientation);
-        qualitySpinner = findViewById(R.id.spinnerImageQuality);
         featuredPhotos = findViewById(R.id.chkbxFeatured);
         searchTags = findViewById(R.id.txtSearchQuery);
         durationTxtView = findViewById(R.id.txtInterval);
+        rdgrpWallpaperQuality = findViewById(R.id.rdgrpWlpr);
+        rdgrpDownloadQuality = findViewById(R.id.rdgrpDwnload);
+        rdgrpOrientation = findViewById(R.id.rdgrpOrientation);
         hideStatusBar();
         loadData();
         toolbar.setTitle("Settings");
@@ -157,8 +145,6 @@ public class SettingsActivity extends AppCompatActivity {
         qualityArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         orientationArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         durationSpinner.setAdapter(durationArrayAdapter);
-        qualitySpinner.setAdapter(qualityArrayAdapter);
-        orientationSpinner.setAdapter(orientationArrayAdapter);
         if (switchButton.isChecked()) {
             durationTxtView.setEnabled(true);
             durationSpinner.setEnabled(true);
@@ -193,78 +179,47 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        //ForOrientationSpinner
-        orientationSpinner.setSelection(orientationSpinnerPosition);
-        first_spinner_orientation = 1;
-        orientationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                if (first_spinner_orientation_counter < first_spinner_orientation) {
-                    first_spinner_orientation_counter++;
-                } else {
-                    String stringArray[] = getResources().getStringArray(R.array.pref_orientation_values);
-                    String names[];
-                    names=getResources().getStringArray(R.array.pref_orientation_title);
-                    String orientName=names[position];
-                    orientation = Integer.parseInt(stringArray[position]);
-                    Toast.makeText(SettingsActivity.this, "Orientation Set : " + orientName, Toast.LENGTH_SHORT).show();
-                    saveData();
-                    hideStatusBar();
-                }
-            }
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-                hideStatusBar();
-            }
-        });
-        //QualitySpinner
-        qualitySpinner.setSelection(qualitySpinnerPosition);
-        first_spinner_quality = 1;
-
-        qualitySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String qualityName;
-                String names[];
-                if (first_spinner_quality_counter < first_spinner_quality) {
-                    first_spinner_quality_counter++;
-                } else {
-                    String stringArray[] = getResources().getStringArray(R.array.pref_image_quality_values);
-                    names=getResources().getStringArray(R.array.pref_image_quality);
-                    qualityName=names[position];
-                    quality = Integer.parseInt(stringArray[position]);
-                    Toast.makeText(SettingsActivity.this, "Quality Set : " + qualityName, Toast.LENGTH_SHORT).show();
-                    saveData();
-                    hideStatusBar();
-                }
-            }
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                hideStatusBar();
-            }
-        });
 
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-                    scheduleJob();
+                    SettingsActivity.this.scheduleJob();
                     durationTxtView.setEnabled(true);
                     durationSpinner.setEnabled(true);
                 } else {
-                    cancelJob();
+                    SettingsActivity.this.cancelJob();
                     durationTxtView.setEnabled(false);
                     durationSpinner.setEnabled(false);
                 }
-                saveData();
+                SettingsActivity.this.saveData();
             }
+        });
+        rdgrpWallpaperQuality.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                SettingsActivity.this.saveData();
+                Toast.makeText(SettingsActivity.this, "Wallpaper Quality Changed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        rdgrpDownloadQuality.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                saveData();
+                Toast.makeText(SettingsActivity.this, "Download Quality Changed!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        rdgrpOrientation.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                saveData();
+                Toast.makeText(SettingsActivity.this, "Orientation Changed!", Toast.LENGTH_SHORT).show();
+            }
+
         });
     }
 
@@ -281,9 +236,10 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void scheduleJob() {
-        SharedPreferences sharedPreferences=getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putBoolean(IS_JOB_GOING,true);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(IS_JOB_GOING, true);
         editor.apply();
         ComponentName componentName = new ComponentName(this, MyScheduledJob.class);
         JobInfo jobInfo = new JobInfo.Builder(JOB_ID, componentName)
@@ -295,17 +251,19 @@ public class SettingsActivity extends AppCompatActivity {
         int res = jobScheduler.schedule(jobInfo);
         if (res == JobScheduler.RESULT_SUCCESS) {
             Toast.makeText(this, "Scheduled for " + interval + " Hour intervals", Toast.LENGTH_SHORT).show();
-            Log.wtf(TAG, "Job is Scheduled<------------------------------");
+            Log.d(TAG, "Job is Scheduled<------------------------------");
         } else
+            Log.d(TAG,"scheduling failed "+res);
             Toast.makeText(this, "Scheduling Failed!", Toast.LENGTH_SHORT).show();
     }
 
     public void cancelJob() {
 
-        SharedPreferences sharedPreferences=getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putBoolean(IS_JOB_GOING,false);
-        editor.putInt(NO_OF_JOBS_DONE,0);
+        Log.d(TAG, "cancelJob: <-----------------");
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(IS_JOB_GOING, false);
+        editor.putInt(NO_OF_JOBS_DONE, 0);
         editor.apply();
         JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
         jobScheduler.cancel(JOB_ID);
@@ -315,9 +273,9 @@ public class SettingsActivity extends AppCompatActivity {
     public void isGoingOn(View view) {
 
         boolean res = isJobServiceOn(this);
-        SharedPreferences sharedPreferences=getSharedPreferences(SHARED_PREFS,MODE_PRIVATE);
-        int count=sharedPreferences.getInt(NO_OF_JOBS_DONE,0);
-        Toast.makeText(this, "Job Status : " + res+" Times Done : "+count, Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        int count = sharedPreferences.getInt(NO_OF_JOBS_DONE, 0);
+        Toast.makeText(this, "Job Status : " + res + " Times Done : " + count, Toast.LENGTH_SHORT).show();
     }
 
     public boolean isJobServiceOn(Context context) {

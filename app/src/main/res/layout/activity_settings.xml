@@ -23,178 +23,286 @@
             layout="@layout/toolbar"
             android:visibility="visible" />
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:fillViewport="true"
+            android:scrollbars="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:gravity="bottom|center"
-                    android:text="Automatic Wallpaper Update"
-                    android:textSize="20sp" />
 
-                <Switch
-                    android:id="@+id/swichScheduler"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:checked="false"
-                    android:showText="false"
-                    android:splitTrack="false"
-                    android:text="Schedule"
-                    android:textSize="24sp" />
+                    android:layout_height="100dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:gravity="bottom|center"
+                        android:text="Automatic Wallpaper Update"
+                        android:textSize="20sp" />
+
+                    <Switch
+                        android:id="@+id/swichScheduler"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:checked="false"
+                        android:showText="false"
+                        android:splitTrack="false"
+                        android:text="Schedule"
+                        android:textSize="24sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/txtInterval"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:gravity="center_horizontal"
+                        android:text="Set Duration"
+                        android:textSize="20sp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerInterval"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:dropDownWidth="match_parent"
+                        android:entries="@array/pref_scheduler_title" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.9"
+                        android:gravity="center_vertical"
+                        android:hint="Will limit no of results"
+                        android:text="Show Only Featured Photos"
+                        android:textAppearance="@style/Widget.MaterialComponents.CompoundButton.Switch"
+                        android:textSize="20sp"
+
+                        />
+
+                    <CheckBox
+                        android:id="@+id/chkbxFeatured"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.1"
+                        android:checked="true"
+                        android:gravity="center|end" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:gravity="bottom|center"
+                        android:text="Enter Search Tags"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/txtSearchQuery"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/bungee_hairline"
+                        android:hint="Try general tags like Blue, Mountain, Galaxy, Water etc"
+                        android:selectAllOnFocus="true"
+                        android:singleLine="true"
+                        android:textAlignment="center"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:typeface="monospace" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:gravity="bottom|center"
+                        android:text="Select Orientation"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5">
+                        <RadioGroup
+                            android:id="@+id/rdgrpOrientation"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:checkedButton="@id/rdbtnPortrait"
+
+                            android:gravity="center_vertical|center_horizontal"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rdbtnPortrait"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Portrait" />
+
+                            <RadioButton
+                                android:id="@+id/rdbtnLandscape"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Landscape" />
+
+                            <RadioButton
+                                android:id="@+id/rdbtnSquarish"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Squarish" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:gravity="bottom|center"
+                        android:text="Select Download Quality"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5">
+
+                        <RadioGroup
+                            android:id="@+id/rdgrpDwnload"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:checkedButton="@id/rdbtnDwnldRegular"
+
+                            android:gravity="center_vertical|center_horizontal"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rdbtnDwnldRegular"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Regular" />
+
+                            <RadioButton
+                                android:id="@+id/rdbtnDwnldHD"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="HD" />
+
+                            <RadioButton
+                                android:id="@+id/rdbtnDwnldRAW"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="RAW" />
+                        </RadioGroup>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5"
+                        android:gravity="bottom|center"
+                        android:text="Select Wallpaper Quality"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5">
+
+                        <RadioGroup
+                            android:id="@+id/rdgrpWlpr"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:checkedButton="@id/rdbtnWlprRegular"
+
+                            android:gravity="center_vertical|center_horizontal"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/rdbtnWlprRegular"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Regular" />
+
+                            <RadioButton
+                                android:id="@+id/rdbtnWlprHD"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="HD" />
+
+                            <RadioButton
+                                android:id="@+id/rdbtnWlprRAW"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="RAW" />
+                        </RadioGroup>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonTest"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:onClick="isGoingOn"
+                    android:text="Is Scheduler On?"
+                    android:textAlignment="center" />
 
             </LinearLayout>
+        </ScrollView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtInterval"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:gravity="center_horizontal"
-                    android:text="Set Duration"
-                    android:textSize="20sp" />
-
-                <Spinner
-                    android:id="@+id/spinnerInterval"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:dropDownWidth="match_parent"
-                    android:entries="@array/pref_scheduler_title"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.9"
-                    android:gravity="center_vertical"
-                    android:text="Show Only Featured Photos"
-                    android:textAppearance="@style/Widget.MaterialComponents.CompoundButton.Switch"
-                    android:textSize="20sp"
-                    />
-
-                <CheckBox
-                    android:id="@+id/chkbxFeatured"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.1"
-                    android:checked="true"
-                    android:gravity="center|end"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:gravity="bottom|center"
-                    android:text="Enter Search Tags"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/txtSearchQuery"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:fontFamily="@font/bungee_hairline"
-                    android:hint="Use general tags like Blue, Mountain, Galaxy, Love etc"
-                    android:selectAllOnFocus="true"
-                    android:singleLine="true"
-                    android:textAlignment="center"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    android:typeface="monospace"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:gravity="bottom|center"
-                    android:text="Select Orientation"
-                    android:textSize="20sp" />
-
-                <Spinner
-                    android:id="@+id/spinnerOrientation"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:dropDownWidth="wrap_content"
-                    android:entries="@array/pref_orientation_title"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.2"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:gravity="bottom|center"
-                    android:text="Select Download Quality"
-                    android:textSize="20sp" />
-
-                <Spinner
-                    android:id="@+id/spinnerImageQuality"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.5"
-                    android:dropDownWidth="wrap_content"
-                    android:entries="@array/pref_image_quality" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/buttonTest"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="0.1"
-                android:onClick="isGoingOn"
-                android:text="Is Scheduler On?"
-                android:textAlignment="center" />
-
-        </LinearLayout>
 
     </LinearLayout>
 
@@ -203,7 +311,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:visibility="visible"
+        android:visibility="gone"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/drawer_menu" />
 

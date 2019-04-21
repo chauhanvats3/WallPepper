@@ -1,9 +1,13 @@
 package com.dazedconfused.WallPepper;
 
+import android.content.Intent;
+import android.util.Log;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.lang.ref.WeakReference;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -14,17 +18,16 @@ class MyMainGestureResponses {
     private BottomSheetBehavior bottomSheetBehavior;
     //THESE ARE SWIPE DEFINITIONS FOR MAIN ACTIVITY
     MyOnSwipeListener mainActivityGestures = new MyOnSwipeListener(mainActivityWeakReference.get()) {
-        MyImageSetter imageSetter;
 
 
         @Override
         public void onClick() {
             super.onClick();
-            if (!MyRuntimePreferences.isSettingImage()) {
-                imageSetter = new MyImageSetter(mainActivityWeakReference.get());
-                imageSetter.setImage();
-            } else
-                mainActivityWeakReference.get().closeKeyboard();
+            Log.d(TAG, "onClick: <---------------");
+            Intent serviceIntent = new Intent(mainActivityWeakReference.get(), ImageSetterService.class);
+
+            ContextCompat.startForegroundService(mainActivityWeakReference.get(), serviceIntent);
+
         }
 
         @Override
