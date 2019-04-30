@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -355,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 String photoLink = photoData.getString(PHOTO_LINK, "");
                 if (photoLink != null) {
-                    photoLink=photoLink.concat("?utm_source=WallPepper&utm_medium=referral");
+                    photoLink = photoLink.concat("?utm_source=WallPepper&utm_medium=referral");
                     Uri uri = Uri.parse(photoLink);
                     try {
                         startActivity(new Intent(Intent.ACTION_VIEW, uri));

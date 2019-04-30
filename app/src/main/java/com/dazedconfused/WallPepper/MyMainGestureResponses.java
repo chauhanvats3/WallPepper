@@ -3,8 +3,6 @@ package com.dazedconfused.WallPepper;
 import android.content.Intent;
 import android.util.Log;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-
 import java.lang.ref.WeakReference;
 
 import androidx.core.content.ContextCompat;
@@ -30,7 +28,7 @@ class MyMainGestureResponses {
 
             ContextCompat.startForegroundService(mainActivityWeakReference.get(), serviceIntent);
 
-            
+
         }
 
         @Override
@@ -77,6 +75,5 @@ class MyMainGestureResponses {
             // your swipe right here.
         }
     };
-    private BottomSheetBehavior bottomSheetBehavior;
 
 }

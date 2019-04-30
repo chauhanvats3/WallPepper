@@ -22,6 +22,7 @@ class MyPermissionChecker {
     private int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE;
 
     void startCheck(WeakReference<MainActivity> myAppRefernce) {
+
         Context myAppContext = myAppRefernce.get();
         Activity myAppActivity = myAppRefernce.get();
         ImageView mainImage = MainActivity.getMInstanceActivityContext().getImageView();
@@ -56,4 +57,5 @@ class MyPermissionChecker {
                 MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
 
     }
+
 }

@@ -69,7 +69,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void saveData() {
-        Log.d(TAG,"saveDATA<----------------");
+
+        Log.d(TAG, "saveDATA<----------------");
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         durationSpinnerPosition = durationSpinner.getSelectedItemPosition();
@@ -87,7 +88,8 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void loadData() {
-        Log.d(TAG,"loadData<--------------------");
+
+        Log.d(TAG, "loadData<--------------------");
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         interval = sharedPreferences.getInt(PREF_INTERVALS, 1);
         switchButton.setChecked(sharedPreferences.getBoolean(PREF_SWITCH_STATUS, false));
@@ -253,8 +255,8 @@ public class SettingsActivity extends AppCompatActivity {
             Toast.makeText(this, "Scheduled for " + interval + " Hour intervals", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Job is Scheduled<------------------------------");
         } else
-            Log.d(TAG,"scheduling failed "+res);
-            Toast.makeText(this, "Scheduling Failed!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "scheduling failed " + res);
+        Toast.makeText(this, "Scheduling Failed!", Toast.LENGTH_SHORT).show();
     }
 
     public void cancelJob() {

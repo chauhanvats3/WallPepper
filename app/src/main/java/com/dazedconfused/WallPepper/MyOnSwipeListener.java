@@ -13,33 +13,42 @@ public class MyOnSwipeListener implements View.OnTouchListener {
 
 
     MyOnSwipeListener(Context c) {
+
         gestureDetector = new GestureDetector(c, new GestureListener());
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public boolean onTouch(final View view, final MotionEvent motionEvent) {
+
         return gestureDetector.onTouchEvent(motionEvent);
     }
 
     public void onSwipeRight() {
+
     }
 
     public void onSwipeLeft() {
+
     }
 
     public void onSwipeUp() {
+
     }
 
     public void onSwipeDown() {
+
     }
 
     public void onClick() {
+
     }
 
     public void onDoubleClick() {
+
     }
 
     public void onLongClick() {
+
     }
 
     private final class GestureListener extends GestureDetector.SimpleOnGestureListener {
@@ -49,23 +58,27 @@ public class MyOnSwipeListener implements View.OnTouchListener {
 
         @Override
         public boolean onDown(MotionEvent e) {
+
             return true;
         }
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+
             onClick();
             return super.onSingleTapUp(e);
         }
 
         @Override
         public boolean onDoubleTap(MotionEvent e) {
+
             onDoubleClick();
             return super.onDoubleTap(e);
         }
 
         @Override
         public void onLongPress(MotionEvent e) {
+
             onLongClick();
             super.onLongPress(e);
         }
@@ -73,6 +86,7 @@ public class MyOnSwipeListener implements View.OnTouchListener {
         // Determines the fling velocity and then fires the appropriate swipe event accordingly
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
             boolean result = false;
             try {
                 float diffY = e2.getY() - e1.getY();
@@ -98,5 +112,7 @@ public class MyOnSwipeListener implements View.OnTouchListener {
             }
             return result;
         }
+
     }
+
 }

@@ -211,8 +211,8 @@ public class ImageSetterService extends Service {
                 }
                 Log.d(TAG, type + " Link Acquired<------------------------------");
                 photoUsableUrl = regPhotoUrl;
-                setWithoutPicasso(photoUsableUrl);
-                //setWithPicasso(photoUsableUrl);
+                //setWithoutPicasso(photoUsableUrl);
+                setWithPicasso(photoUsableUrl);
             }
 
             @Override
@@ -297,17 +297,12 @@ public class ImageSetterService extends Service {
         MyRuntimePreferences.setImageSettingStatus(false);
         Log.d(TAG, "Image set<-------------------------");
 
-        Toast.makeText(this, "Image set", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ImageSetterService.this, "Image set", Toast.LENGTH_SHORT).show();
 
 
         if (MainActivity.getMInstanceActivityContext() != null)
             MainActivity.getMInstanceActivityContext().setupPhotoDetails();
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         Intent serviceIntent = new Intent(this, ImageSetterService.class);
         stopService(serviceIntent);
@@ -451,8 +446,8 @@ public class ImageSetterService extends Service {
         Log.wtf(TAG, "getID():" + myPhoto.getId());
         Log.wtf(TAG, "First Name:" + name);
         //Log.wtf(TAG, "Username:" + myPhoto.getUser().getUsername());
-        Log.wtf(TAG, "Device w:" + devWidth + " h:" + devHeight);
-        Log.wtf(TAG, "Height: " + myPhoto.getHeight() + " Width:" + myPhoto.getWidth());
+        //Log.wtf(TAG, "Device w:" + devWidth + " h:" + devHeight);
+        //Log.wtf(TAG, "Height: " + myPhoto.getHeight() + " Width:" + myPhoto.getWidth());
         //Log.wtf(TAG, "Likes:" + myPhoto.getLikes());
         //Log.wtf(TAG, "getPhotos():" + myPhoto.getLinks().getPhotos());
         //Log.wtf(TAG, "getSelf():" + myPhoto.getLinks().getSelf());
