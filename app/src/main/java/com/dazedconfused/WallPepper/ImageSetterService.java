@@ -15,15 +15,15 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+
 import com.kc.unsplash.Unsplash;
 import com.kc.unsplash.models.Photo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.lang.ref.WeakReference;
-
-import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 
 import static com.dazedconfused.WallPepper.App.CHANNEL_ID;
 import static com.dazedconfused.WallPepper.MyRuntimePreferences.KEY_DEVICE_HEIGHT;
@@ -83,11 +83,11 @@ public class ImageSetterService extends Service {
     private Photo myPhoto;
     private String country;
     private String city;
-    private Target mTarget;
     private int context;
     private String photoUsableUrl;
     private WeakReference<MainActivity> mainActivityWeakReference;
     private WeakReference<MyScheduledJob> scheduledJobWeakReference;
+    private Target mTarget;
 
     @Override
     public void onCreate() {
@@ -136,6 +136,7 @@ public class ImageSetterService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
+
         Log.d(TAG, "startForeground called<---------------- ");
 
         //do heavy work on a background thread
