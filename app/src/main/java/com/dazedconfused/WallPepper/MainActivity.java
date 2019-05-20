@@ -28,6 +28,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -404,4 +406,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        //Deletes Cache On Every App Close event
+        FileUtils.deleteQuietly(MainActivity.this.getCacheDir());
+        super.onDestroy();
+    }
 }
