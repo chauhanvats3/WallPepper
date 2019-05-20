@@ -20,6 +20,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
@@ -27,10 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -342,8 +343,12 @@ public class MainActivity extends AppCompatActivity {
                         qualityName = "RAW";
                         break;
                 }
-                downloadUsingManager(downloadLink);
-                Toast.makeText(MainActivity.this, "Downloading in " + qualityName, Toast.LENGTH_SHORT).show();
+                if (downloadLink == "") {
+                    Toast.makeText(MainActivity.this, "Link Not Found For Downloading!", Toast.LENGTH_SHORT).show();
+                } else {
+                    downloadUsingManager(downloadLink);
+                    Toast.makeText(MainActivity.this, "Downloading in " + qualityName, Toast.LENGTH_SHORT).show();
+                }
                 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
