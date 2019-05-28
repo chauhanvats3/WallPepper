@@ -9,7 +9,6 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="client_id">6b896bd4a756fd9da3c7ff571c2a1ff10dda8c72a12c34c70b5be5b6ffeec7fa</string>
     <string-array name="pref_orientation_title">
         <item>Portrait</item>
         <item>Landscape</item>

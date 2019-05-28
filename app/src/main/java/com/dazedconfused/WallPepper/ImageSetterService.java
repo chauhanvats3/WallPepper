@@ -23,6 +23,8 @@ import com.kc.unsplash.models.Photo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import org.apache.commons.io.FileUtils;
+
 import java.lang.ref.WeakReference;
 
 import static com.dazedconfused.WallPepper.App.CHANNEL_ID;
@@ -106,7 +108,7 @@ public class ImageSetterService extends Service {
             scheduledJobWeakReference = MyScheduledJob.getScheduleJobReference();
         }
 
-        clientId = getString(R.string.client_id);
+        clientId = getResources().getString(R.string.client_id); //GET YOUR CLIENT ID FROM UNSPLASH.COM
         unsplash = new Unsplash(clientId);
         if (context == 1) {
             mainImage = mainActivityWeakReference.get().getImageView();
@@ -152,6 +154,7 @@ public class ImageSetterService extends Service {
     public void onDestroy() {
 
         Log.d(TAG, "onDestroy: <---------------");
+        FileUtils.deleteQuietly(ImageSetterService.this.getCacheDir());
         super.onDestroy();
     }
 
@@ -223,8 +226,9 @@ public class ImageSetterService extends Service {
                 if (context == 1) {
                     Toast.makeText(ImageSetterService.this, "Can't Access Unsplash.com!", Toast.LENGTH_SHORT).show();
                     getNewReference();
-                } else
+                } else {
                     Toast.makeText(ImageSetterService.this, "Can't Access Unsplash.com!", Toast.LENGTH_SHORT).show();
+                }
 
                 MyRuntimePreferences.setImageSettingStatus(false);
             }

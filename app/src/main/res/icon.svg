@@ -1,0 +1,49 @@
+<svg height="48" version="1.1" width="48" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient gradientUnits="userSpaceOnUse" id="color-1" x1="11.67152" x2="51.53128"
+            y1="14.75364" y2="48.44916">
+            <stop offset="0.32" stop-color="#000000" stop-opacity="0.71"></stop>
+            <stop offset="1" stop-color="#000000" stop-opacity="0"></stop>
+        </linearGradient>
+        <filter id="dropshadow-base">
+            <feColorMatrix type="matrix"
+                values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .8 0"></feColorMatrix>
+            <feOffset dx="0" dy="1"></feOffset>
+            <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+            <feComposite in="SourceGraphic"></feComposite>
+        </filter>
+        <filter height="130%" id="dropshadow-banner" width="120%" x="-10%" y="-10%">
+            <feColorMatrix type="matrix"
+                values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .4 0"></feColorMatrix>
+            <feOffset dx="0" dy="1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5"></feGaussianBlur>
+            <feComposite in="SourceGraphic"></feComposite>
+        </filter>
+    </defs>
+    <g style="mix-blend-mode: normal" fill="none" fill-rule="nonzero" font-family="none"
+        font-size="none" stroke="none" stroke-dasharray="" stroke-dashoffset="0"
+        stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-width="none">
+        <path
+            d="M10,46c-1.10457,0 -2,-0.89543 -2,-2v-40c0,-1.10457 0.89543,-2 2,-2h28c1.10457,0 2,0.89543 2,2v40c0,1.10457 -0.89543,2 -2,2z"
+            fill="#00e6ff" fill-opacity="0.53" id="base 1 5" stroke-width="1"></path>
+        <path
+            d="M30.16424,14.75364l2.4657,2.4657l3.69854,0l3.67152,3.67152v23.10915c0,1.10457 -0.89543,2 -2,2h-7.4106l-0.01654,-0.01654l-3.69854,0l-15.2028,-15.2028v-13.56133l4.93139,0l1.23285,1.23285l0,-3.69854z"
+            fill="url(#color-1)" stroke-width="1"></path>
+        <path
+            d="M17.83576,33.24636h12.32848v-18.49272h-12.32848zM11.67152,30.78066h4.93139v-13.56133h-4.93139zM31.39709,17.21934v13.56133h4.93139v-13.56133z"
+            fill="none" stroke-width="0"></path>
+        <path
+            d="M17.83576,14.75364h12.32848v18.49272h-12.32848zM11.67152,17.21934h4.93139v13.56133h-4.93139zM36.32848,17.21934v13.56133h-4.93139v-13.56133z"
+            fill="#ffffff" stroke-width="0"></path>
+        <path
+            d="M2,24c0,-12.15026 9.84974,-22 22,-22c12.15026,0 22,9.84974 22,22c0,12.15026 -9.84974,22 -22,22c-12.15026,0 -22,-9.84974 -22,-22z"
+            fill="none" id="base 1 1 1" stroke-width="1"></path>
+        <g fill="#000000" font-family="Roboto, sans-serif" font-size="14" font-weight="400"
+            stroke-width="1" text-anchor="start"></g>
+        <rect fill="none" height="22" stroke-width="1" width="44" x="2" y="2"></rect>
+        <path d="M2,24v-22h44v22z" fill="none" stroke-width="1"></path>
+        <path d="M2,24v-22h44v22z" fill="none" stroke-width="1"></path>
+        <path d="M2,24v-22h44v22z" fill="none" stroke-width="1"></path>
+        <path d="M2,24v-22h44v22z" fill="none" stroke-width="1"></path>
+    </g>
+</svg>

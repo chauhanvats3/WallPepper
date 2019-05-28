@@ -6,13 +6,13 @@ import android.net.Uri;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.material.navigation.NavigationView;
-
-import java.lang.ref.WeakReference;
-
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.navigation.NavigationView;
+
+import java.lang.ref.WeakReference;
 
 class MyNavItemListener {
     private static final String TAG = "MyNavItemListener";
@@ -35,6 +35,7 @@ class MyNavItemListener {
             drawerLayout.closeDrawer(GravityCompat.START);
             switch (item.getItemId()) {
                 case R.id.nav_favorite:
+                    Toast.makeText(context, "Favourites Not Developed Yet!", Toast.LENGTH_SHORT).show();
                     break;
                 case R.id.nav_settings:
                     intent = new Intent(context, SettingsActivity.class);
@@ -49,6 +50,8 @@ class MyNavItemListener {
                     break;
                 case R.id.nav_share:
                     Toast.makeText(context, "Share", Toast.LENGTH_SHORT).show();
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://github.com/chauhanvats3/WallPepper"));
+                    context.startActivity(browserIntent);
                     break;
                 case R.id.nav_home:
                     intent = new Intent(context, MainActivity.class);
